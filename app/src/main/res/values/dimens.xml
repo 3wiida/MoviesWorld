@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Button -->
+    <dimen name="buttonTextSize">14sp</dimen>
+    <dimen name="buttonPadding">1dp</dimen>
+    <dimen name="buttonCornerRadius">8dp</dimen>
+</resources>

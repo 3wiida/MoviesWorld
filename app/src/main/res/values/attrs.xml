@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MainBtn">
+        <attr name="btnText" format="string" />
+        <attr name="btnState" format="enum">
+            <enum name="loading" value="1" />
+            <enum name="noLoading" value="0" />
+        </attr>
+    </declare-styleable>
+</resources>

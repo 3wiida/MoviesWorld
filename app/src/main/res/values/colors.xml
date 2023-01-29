@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Main Colors -->
+    <color name="mainAppColor">#1F203E</color>
+    <color name="secondaryAppColor">#546EE5</color>
+
+    <!-- Button Colors -->
+    <color name="buttonMainColor">#546EE5</color>
+    <color name="buttonSecondaryColor">#F9FAFA</color>
+    <color name="disabledButtonColor">#80546EE5</color>
+    
+    <!-- Text Colors -->
+    <color name="textMainColor">#FFFFFF</color>
+    <color name="textSecondaryColor">#838C9F</color>
+    <color name="textThirdColor">#546EE5</color>
 </resources>
