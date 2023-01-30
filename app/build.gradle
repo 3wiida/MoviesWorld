@@ -88,5 +88,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
     //lotti animation
-    implementation "com.airbnb.android:lottie:3.4.0"
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

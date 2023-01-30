@@ -19,5 +19,7 @@
     <string name="createAnAccount">Create An Account</string>
     <string name="emailHint">E-mail</string>
     <string name="passwordHint">Password</string>
+    <string name="loginWithGoogle">Login With Google</string>
+    <string name="loginWithFacebook">Login With Facebook</string>
 
 </resources>
