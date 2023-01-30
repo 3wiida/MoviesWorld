@@ -1,3 +1,23 @@
-<resources>
-    <string name="app_name">Rick &amp; Morti</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Movie World</string>
+
+    <!-- OnBoarding -->
+    <string name="onBoardingMainText">Enjoy your favourite movie Anytime, Anywhere</string>
+    <string name="onBoardingSecondaryText">Watch movies with family and friends for free on movie world</string>
+
+    <!-- Buttons -->
+    <string name="getStarted">Get Started</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Login Screen-->
+    <string name="logInMyAccount">Log In My Account</string>
+    <string name="rememberMe" >Remember me</string>
+    <string name="forgotPassword">Forgot Password</string>
+    <string name="anotherOption">-or you can also-</string>
+    <string name="doNotHaveAccount">Don\'t have an Account?</string>
+    <string name="createAnAccount">Create An Account</string>
+    <string name="emailHint">E-mail</string>
+    <string name="passwordHint">Password</string>
+
 </resources>

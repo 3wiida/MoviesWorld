@@ -21,4 +21,7 @@
     <color name="textMainColor">#FFFFFF</color>
     <color name="textSecondaryColor">#838C9F</color>
     <color name="textThirdColor">#546EE5</color>
+
+    <!-- border Color-->
+    <color name="mainBorderColor">#2E3350</color>
 </resources>

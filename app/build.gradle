@@ -32,6 +32,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    dataBinding{
+        enabled=true
+    }
 }
 
 dependencies {
@@ -78,4 +82,11 @@ dependencies {
 
     //paging 3 dependency
     implementation "androidx.paging:paging-runtime:3.1.1"
+
+    //nav component
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+
+    //lotti animation
+    implementation "com.airbnb.android:lottie:3.4.0"
 }

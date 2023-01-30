@@ -7,4 +7,11 @@
             <enum name="noLoading" value="0" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="movieWorldEditText">
+        <attr name="boxLabel" format="string"/>
+        <attr name="boxImage" format="reference"/>
+        <attr name="setInputType" format="integer"/>
+        <attr name="boxDrawable" format="reference"/>
+    </declare-styleable>
 </resources>
