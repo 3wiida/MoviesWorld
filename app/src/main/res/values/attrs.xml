@@ -9,6 +9,7 @@
     </declare-styleable>
 
     <declare-styleable name="movieWorldEditText">
+        <attr name="boxError" format="string"/>
         <attr name="boxLabel" format="string"/>
         <attr name="boxImage" format="reference"/>
         <attr name="setInputType" format="integer"/>

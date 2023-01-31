@@ -1,49 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_edit_text_background"
-    android:padding="8dp">
-
-    <ImageView
-        android:id="@+id/boxImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/email" />
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
-        android:background="@color/mainBorderColor" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_edit_text_background"
+        android:padding="8dp">
+        <ImageView
+            android:id="@+id/boxImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/email" />
 
-        <TextView
-            android:id="@+id/label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="E-mail"
-            android:textSize="12sp"
-            android:textColor="@color/textSecondaryColor"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_marginStart="10dp"/>
-
-        <EditText
-            android:id="@+id/boxEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <View
+            android:layout_width="1dp"
+            android:layout_height="45dp"
             android:layout_marginStart="10dp"
-            android:background="@null"
-            android:drawablePadding="5dp"
-            android:inputType=""
-            android:textColor="@color/textMainColor"
-            android:textSize="14sp" />
+            android:background="@color/mainBorderColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="E-mail"
+                android:textColor="@color/textSecondaryColor"
+                android:textSize="12sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+
+                style="@style/My.TextInputLayout.FilledBox.Padding"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/boxEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:background="@null"
+                    
+                    android:textColor="@color/textMainColor"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/boxError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#F60D0D"
+        android:fontFamily="@font/poppins_regular"
+        android:paddingTop="3dp"
+        android:textSize="11sp"
+        android:paddingStart="8dp"/>
+
 </LinearLayout>

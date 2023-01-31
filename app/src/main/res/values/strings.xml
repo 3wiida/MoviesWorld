@@ -12,7 +12,7 @@
 
     <!-- Login Screen-->
     <string name="logInMyAccount">Log In My Account</string>
-    <string name="rememberMe" >Remember me</string>
+    <string name="rememberMe">Remember me</string>
     <string name="forgotPassword">Forgot Password</string>
     <string name="anotherOption">-or you can also-</string>
     <string name="doNotHaveAccount">Don\'t have an Account?</string>
@@ -21,5 +21,16 @@
     <string name="passwordHint">Password</string>
     <string name="loginWithGoogle">Login With Google</string>
     <string name="loginWithFacebook">Login With Facebook</string>
+    <string name="login">Login</string>
+
+    <!-- Register Screen -->
+    <string name="signUpDes">Please fill the input blow here</string>
+    <string name="policyTerms">By registering you accept or conditions, \nUse Policy and Privacy Notice.</string>
+    <string name="createMyAccount">Create My Account</string>
+    <string name="createWithGoogle">Create With Google</string>
+    <string name="createWithFacebook">Create With Facebook</string>
+    <string name="loginYourAccount">Login Your Account</string>
+    <string name="doYouHaveAccount">Do you have an Account?</string>
+    <string name="confirmPassHint">Confirm Password</string>
 
 </resources>

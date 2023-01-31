@@ -1,45 +1,46 @@
-package com.ewida.rickmorti.ui.auth.login
+package com.ewida.rickmorti.ui.auth.signup
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
-import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.ewida.rickmorti.R
-import com.ewida.rickmorti.common.Common.TAG
-import com.ewida.rickmorti.databinding.FragmentLoginBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.ewida.rickmorti.databinding.FragmentSignUpBinding
 
-@AndroidEntryPoint
-class LoginFragment : Fragment() {
-    lateinit var binding: FragmentLoginBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding= FragmentLoginBinding.inflate(inflater,container,false)
+class SignUpFragment : Fragment() {
+    lateinit var binding:FragmentSignUpBinding
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding= FragmentSignUpBinding.inflate(inflater,container,false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initMainClicks()
         watchEmailEditText()
         watchPasswordEditText()
-        initMainClicks()
+        watchConfirmPasswordEditText()
+
     }
 
     private fun initMainClicks(){
-        binding.createAnAccTv.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+        binding.loginMyAccTv.setOnClickListener {
+            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
     }
+
     private fun watchEmailEditText(){
-        binding.emailEt.inputEt.addTextChangedListener(object :TextWatcher{
+        binding.emailEt.inputEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 p0?.let {
@@ -56,7 +57,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun watchPasswordEditText(){
-        binding.passwordEt.inputEt.addTextChangedListener(object :TextWatcher{
+        binding.passwordEt.inputEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 p0?.let {
@@ -72,6 +73,21 @@ class LoginFragment : Fragment() {
         })
     }
 
+    private fun watchConfirmPasswordEditText(){
+        binding.confirmPasswordEt.inputEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                p0?.let {
+                    if(p0.isNotEmpty()){
+                        binding.confirmPasswordEt.changeDrawableVisibility(true)
+                    }else{
+                        binding.confirmPasswordEt.changeDrawableVisibility(false)
+                    }
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {}
 
+        })
+    }
 
 }
