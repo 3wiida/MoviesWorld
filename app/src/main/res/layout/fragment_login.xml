@@ -212,7 +212,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/loginWithFacebook"
+                    android:id="@+id/guestLoginBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/_4_white_rect"
@@ -223,6 +223,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView7">
 
                     <ImageView
+                        android:id="@+id/guestLogo"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:src="@drawable/guest_ic"
@@ -231,12 +232,24 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/guestBtnTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_semi_bold"
                         android:text="@string/loginAsGuest"
                         android:textColor="@color/textThirdColor"
                         android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/guestBtnPb"
+                        android:visibility="invisible"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:indeterminateTint="@color/textThirdColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -255,7 +268,7 @@
                     android:textColor="@color/textSecondaryColor"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/loginWithFacebook" />
+                    app:layout_constraintTop_toBottomOf="@+id/guestLoginBtn" />
 
                 <TextView
                     android:id="@+id/createAnAccTv"

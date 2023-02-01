@@ -9,4 +9,6 @@ class LoginRepository @Inject constructor(private val apiCalls: ApiCalls) {
         sendSafeApiCall { apiCalls.loginUser(username, password, request_token) }
 
     suspend fun requestToken()= sendSafeApiCall { apiCalls.getRequestToken() }
+
+    suspend fun createGuestSession()= sendSafeApiCall { apiCalls.createGuestSession() }
 }

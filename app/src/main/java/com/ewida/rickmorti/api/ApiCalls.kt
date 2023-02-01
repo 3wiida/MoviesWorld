@@ -1,5 +1,6 @@
 package com.ewida.rickmorti.api
 
+import com.ewida.rickmorti.model.guest_session_response.GuestSessionResponse
 import com.ewida.rickmorti.model.login_response.LoginResponse
 import com.ewida.rickmorti.model.request_token_response.RequestTokenResponse
 import retrofit2.http.Field
@@ -19,4 +20,7 @@ interface ApiCalls {
         @Field("password") password:String,
         @Field("request_token") request_token:String
     ):LoginResponse
+
+    @GET("authentication/guest_session/new")
+    suspend fun createGuestSession():GuestSessionResponse
 }

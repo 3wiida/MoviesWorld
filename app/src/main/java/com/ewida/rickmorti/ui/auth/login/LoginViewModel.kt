@@ -19,7 +19,11 @@ class LoginViewModel @Inject constructor(private val repo: LoginRepository) : Vi
     //Variables
     private val _loginState = MutableStateFlow<CallState>(CallState.EmptyState)
     val loginState = _loginState.asStateFlow()
-    val formErrors=ObservableArrayList<FormValidator.ErrorEnum>()
+
+    private val _guestSessionResponse = MutableStateFlow<CallState>(CallState.EmptyState)
+    val guestSessionResponse = _guestSessionResponse.asStateFlow()
+
+    val formErrors = ObservableArrayList<FormValidator.ErrorEnum>()
 
     //Functions
     private suspend fun getRequestToken(username: String, password: String) {
@@ -50,11 +54,21 @@ class LoginViewModel @Inject constructor(private val repo: LoginRepository) : Vi
         }
     }
 
-    fun validateForm(username:String,password:String):Boolean{
+    fun createGuestSession(){
+        viewModelScope.launch(Dispatchers.IO){
+            _guestSessionResponse.value=CallState.LoadingState
+            when(val response=repo.createGuestSession()){
+                is CallResult.CallFailure -> _guestSessionResponse.value=CallState.FailureState(response.msg,response.code)
+                is CallResult.CallSuccess -> _guestSessionResponse.value=CallState.SuccessState(response.data)
+            }
+        }
+    }
+
+    fun validateForm(username: String, password: String): Boolean {
         formErrors.clear()
-        if(username.isEmpty())
+        if (username.isEmpty())
             formErrors.add(FormValidator.ErrorEnum.INVALID_USERNAME)
-        if(password.isEmpty())
+        if (password.isEmpty())
             formErrors.add(FormValidator.ErrorEnum.INVALID_PASSWORD)
         return formErrors.isEmpty()
     }

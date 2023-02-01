@@ -204,7 +204,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/loginWithFacebook"
+                    android:id="@+id/guestLoginBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/_4_white_rect"
@@ -247,7 +247,7 @@
                     android:textColor="@color/textSecondaryColor"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/loginWithFacebook" />
+                    app:layout_constraintTop_toBottomOf="@+id/guestLoginBtn" />
 
                 <TextView
                     android:id="@+id/loginMyAccTv"
