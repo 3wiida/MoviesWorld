@@ -1,7 +1,11 @@
 package com.ewida.rickmorti.di
 
+import android.os.Bundle
 import android.util.Log
+import com.ewida.rickmorti.R
 import com.ewida.rickmorti.api.ApiCalls
+import com.ewida.rickmorti.common.Common
+import com.ewida.rickmorti.common.Common.API_TOKEN
 import com.ewida.rickmorti.common.Common.BASE_URL
 import com.ewida.rickmorti.common.Common.TAG
 import dagger.Module
@@ -36,6 +40,7 @@ object AppModule {
             addInterceptor {chain ->  
                 val newRequest=chain.request().newBuilder()
                 newRequest.addHeader("Accept", "application/json")
+                newRequest.addHeader("Authorization","Bearer $API_TOKEN")
                 chain.proceed(newRequest.build())
             }
             addInterceptor(httpClientLoggingInterceptor)
@@ -56,6 +61,12 @@ object AppModule {
     @Singleton
     fun provideApiCalls(retrofit:Retrofit):ApiCalls{
         return retrofit.create(ApiCalls::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBundle():Bundle{
+        return Bundle()
     }
 
 

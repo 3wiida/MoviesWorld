@@ -20,7 +20,7 @@ import com.google.android.material.textfield.TextInputLayout
 @SuppressLint("CustomViewStyleable", "ResourceAsColor")
 class MovieWorldEditText(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
-
+    var boxError:String?=null
     val inputEt: EditText
     private val boxImage: ImageView
     private val boxLabel: TextView
@@ -37,7 +37,7 @@ class MovieWorldEditText(context: Context, attributeSet: AttributeSet) :
         val image = attrs.getDrawable(R.styleable.movieWorldEditText_boxImage)
         val type = attrs.getInt(R.styleable.movieWorldEditText_setInputType, 1)
         val boxDrawable = attrs.getDrawable(R.styleable.movieWorldEditText_boxDrawable)
-        val boxError = attrs.getString(R.styleable.movieWorldEditText_boxError)
+        boxError = attrs.getString(R.styleable.movieWorldEditText_boxError)
 
         boxLabel = findViewById(R.id.label)
         boxImage = findViewById(R.id.boxImage)
@@ -74,5 +74,10 @@ class MovieWorldEditText(context: Context, attributeSet: AttributeSet) :
     }
 
     fun getText(): String = inputEt.text.toString()
+
+    fun getErrorTextView():TextView{
+        return errorTv
+    }
+
 
 }

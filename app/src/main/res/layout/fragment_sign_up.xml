@@ -91,7 +91,7 @@
                     android:layout_marginTop="40dp"
                     app:boxDrawable="@drawable/done"
                     app:boxImage="@drawable/email"
-                    app:boxLabel="@string/emailHint"
+                    app:boxLabel="@string/usernameHint"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline"

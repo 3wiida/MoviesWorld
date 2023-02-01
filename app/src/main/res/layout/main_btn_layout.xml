@@ -23,9 +23,10 @@
     <ProgressBar
         android:id="@+id/mainBtnPb"
         style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
         android:visibility="invisible"
+        android:layout_margin="6dp"
         android:indeterminateTint="@color/textMainColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

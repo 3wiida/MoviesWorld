@@ -10,6 +10,13 @@ sealed class CallResult<out T> {
     data class CallFailure(val msg: String, val code: Int) : CallResult<Nothing>()
 }
 
+sealed class CallState{
+    object EmptyState:CallState()
+    object LoadingState:CallState()
+    data class SuccessState<T>(val data:T):CallState()
+    data class FailureState(val msg: String?=null,val code: Int?=null):CallState()
+}
+
 suspend fun <T> sendSafeApiCall(apiCall: suspend () -> T): CallResult<T> {
     return try {
         CallResult.CallSuccess(apiCall.invoke())
@@ -18,7 +25,7 @@ suspend fun <T> sendSafeApiCall(apiCall: suspend () -> T): CallResult<T> {
             is IOException -> CallResult.CallFailure("No Internet Connection", -1)
             is HttpException -> {
                 val failure = getFailureBody(throwable)
-                CallResult.CallFailure(failure.status_message, failure.status_code)
+                CallResult.CallFailure(failure.status_message , failure.status_code )
             }
             else -> CallResult.CallFailure(throwable.message.toString(), -2)
         }

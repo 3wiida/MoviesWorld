@@ -17,11 +17,14 @@
     <string name="anotherOption">-or you can also-</string>
     <string name="doNotHaveAccount">Don\'t have an Account?</string>
     <string name="createAnAccount">Create An Account</string>
-    <string name="emailHint">E-mail</string>
+    <string name="usernameHint">Username</string>
     <string name="passwordHint">Password</string>
     <string name="loginWithGoogle">Login With Google</string>
     <string name="loginWithFacebook">Login With Facebook</string>
     <string name="login">Login</string>
+    <string name="invalidUsername">Invalid Username</string>
+    <string name="invalidPassword">Invalid Password</string>
+    <string name="loginAsGuest">Login as a guest</string>
 
     <!-- Register Screen -->
     <string name="signUpDes">Please fill the input blow here</string>
