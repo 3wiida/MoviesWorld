@@ -7,6 +7,8 @@ import com.ewida.rickmorti.R
 import com.ewida.rickmorti.databinding.ActivityWebBinding
 import com.ewida.rickmorti.utils.bundle_utils.BundleKeys.WEB_PAGE_URL
 import com.ewida.rickmorti.utils.bundle_utils.BundleUtils.getFromBundle
+import com.ewida.rickmorti.utils.bundle_utils.IntentExtraKeys.AUTH_PERMISSIONS
+import com.ewida.rickmorti.utils.bundle_utils.IntentExtraKeys.SIGN_UP
 import javax.inject.Inject
 
 class WebActivity : AppCompatActivity() {
@@ -18,7 +20,10 @@ class WebActivity : AppCompatActivity() {
         binding= ActivityWebBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.movieWorldWv.webViewClient= WebViewClient()
-        viewWebPage(getFromBundle(WEB_PAGE_URL,"https://www.themoviedb.org/") as String)
+        val url=intent.getStringExtra(SIGN_UP)
+        url?.let {
+            viewWebPage(it)
+        }
     }
 
     private fun viewWebPage(url:String){

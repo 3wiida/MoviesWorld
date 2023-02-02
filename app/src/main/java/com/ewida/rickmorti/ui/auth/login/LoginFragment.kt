@@ -2,8 +2,7 @@ package com.ewida.rickmorti.ui.auth.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,21 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.ewida.rickmorti.base.BaseFragment
+import com.ewida.rickmorti.common.Common.TAG
 import com.ewida.rickmorti.databinding.FragmentLoginBinding
 import com.ewida.rickmorti.model.guest_session_response.GuestSessionResponse
-import com.ewida.rickmorti.model.login_response.LoginResponse
+import com.ewida.rickmorti.model.user_login_session.UserSessionResponse
+import com.ewida.rickmorti.ui.home.HomeActivity
 import com.ewida.rickmorti.ui.webview.WebActivity
-import com.ewida.rickmorti.utils.bundle_utils.BundleKeys.WEB_PAGE_URL
-import com.ewida.rickmorti.utils.bundle_utils.BundleUtils.saveInBundle
+import com.ewida.rickmorti.utils.bundle_utils.IntentExtraKeys.SIGN_UP
+import com.ewida.rickmorti.utils.movie_world_utils.isSessionValid
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.GUEST_EXPIRE_DATE
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.GUEST_SESSION_ID
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.LAST_LOGIN_WAS
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.REMEMBER_ME_VALUE
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.USER_SESSION_ID
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefUtils.getFromPref
+import com.ewida.rickmorti.utils.shared_pref_utils.PrefUtils.saveToPref
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,16 +43,32 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        watchEmailEditText()
-        watchPasswordEditText()
         initMainClicks()
+
+        collectState<UserSessionResponse>(
+            viewModel.loginState,
+            Lifecycle.State.CREATED,
+            { UserLoginState().loading() },
+            {msg,_ ->  UserLoginState().failure(msg)},
+            {UserLoginState().success(it)}
+        )
+
+        collectState<GuestSessionResponse>(
+            viewModel.guestSessionResponse,
+            Lifecycle.State.CREATED,
+            { GuestSessionState().loading() },
+            { msg,_ -> GuestSessionState().failure(msg) },
+            { GuestSessionState().success(it) }
+        )
+
     }
 
     private fun initMainClicks() {
 
         binding.createAnAccTv.setOnClickListener {
-            saveInBundle(WEB_PAGE_URL, "https://www.themoviedb.org/signup")
-            startActivity(Intent(requireActivity(), WebActivity::class.java))
+            val intent=Intent(requireActivity(),WebActivity::class.java)
+            intent.putExtra(SIGN_UP,"https://www.themoviedb.org/signup")
+            startActivity(intent)
         }
 
         binding.loginBtn.setOnClickListener {
@@ -52,63 +76,43 @@ class LoginFragment : BaseFragment() {
             val password = binding.passwordEt.getText()
             if (viewModel.validateForm(username, password)) {
                 viewModel.login(username, password)
-                collectState<LoginResponse>(
-                    viewModel.loginState,
-                    Lifecycle.State.STARTED,
-                    { UserLoginState().loading() },
-                    {msg,_ ->  UserLoginState().failure(msg)},
-                    {UserLoginState().success(it)}
-                )
             }
         }
 
         binding.guestLoginBtn.setOnClickListener {
+            beginGuestSession()
+        }
+    }
+
+    private fun beginGuestSession(){
+        val guestSessionId = getFromPref(requireContext(),GUEST_SESSION_ID,"") as String
+        if(guestSessionId.isEmpty()){
             viewModel.createGuestSession()
-            collectState<GuestSessionResponse>(
-                viewModel.guestSessionResponse,
-                Lifecycle.State.STARTED,
-                { GuestSessionState().loading() },
-                { msg,_ -> GuestSessionState().failure(msg) },
-                { GuestSessionState().success(it) }
-            )
+        }else{
+            startActivity(Intent(requireActivity(), HomeActivity::class.java))
+            activity?.finish()
+        }
+    }
+
+    private inner class UserLoginState {
+        fun loading() {
+            binding.loginBtn.changeLoading(1)
         }
 
-    }
+        fun failure(msg: String) {
+            binding.loginBtn.changeLoading(0)
+            Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
+        }
 
-    private fun watchEmailEditText() {
-        binding.emailEt.inputEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                p0?.let {
-                    if (it.length > 2) {
-                        binding.emailEt.changeDrawableVisibility(true)
-                    } else {
-                        binding.emailEt.changeDrawableVisibility(false)
-                    }
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-
-        })
-    }
-
-    private fun watchPasswordEditText() {
-        binding.passwordEt.inputEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                p0?.let {
-                    if (it.isNotEmpty()) {
-                        binding.passwordEt.changeDrawableVisibility(true)
-                    } else {
-                        binding.passwordEt.changeDrawableVisibility(false)
-                    }
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-
-        })
+        fun success(data: UserSessionResponse) {
+            binding.loginBtn.changeLoading(0)
+            val rememberMe=binding.rememberMeCheckBox.isChecked
+            saveToPref(requireContext(), REMEMBER_ME_VALUE,rememberMe)
+            saveToPref(requireContext(),USER_SESSION_ID,data.session_id)
+            saveToPref(requireContext(), LAST_LOGIN_WAS,"user")
+            startActivity(Intent(requireActivity(), HomeActivity::class.java))
+            activity?.finish()
+        }
     }
 
     private inner class GuestSessionState {
@@ -131,24 +135,14 @@ class LoginFragment : BaseFragment() {
 
         fun success(data: GuestSessionResponse) {
             disableLoading()
-            Toast.makeText(requireActivity(), data.guest_session_id, Toast.LENGTH_SHORT).show()
+            saveToPref(requireContext(),GUEST_SESSION_ID,data.guest_session_id)
+            saveToPref(requireContext(),GUEST_EXPIRE_DATE,data.expires_at)
+            saveToPref(requireContext(), LAST_LOGIN_WAS,"guest")
+            startActivity(Intent(requireActivity(), HomeActivity::class.java))
+            activity?.finish()
         }
     }
 
-    private inner class UserLoginState {
-        fun loading() {
-            binding.loginBtn.changeLoading(1)
-        }
 
-        fun failure(msg: String) {
-            binding.loginBtn.changeLoading(0)
-            Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
-        }
-
-        fun success(data: LoginResponse) {
-            binding.loginBtn.changeLoading(0)
-            Toast.makeText(requireContext(), data.success.toString(), Toast.LENGTH_SHORT).show()
-        }
-    }
 
 }

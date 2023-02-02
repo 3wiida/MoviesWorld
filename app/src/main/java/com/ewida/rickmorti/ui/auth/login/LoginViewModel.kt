@@ -43,8 +43,15 @@ class LoginViewModel @Inject constructor(private val repo: LoginRepository) : Vi
             is CallResult.CallFailure -> _loginState.value =
                 CallState.FailureState(response.msg, response.code)
             is CallResult.CallSuccess -> {
-                _loginState.value = CallState.SuccessState(response.data)
+                createSessionData(response.data.request_token)
             }
+        }
+    }
+
+    private suspend fun createSessionData(request_token:String){
+        when(val response=repo.createUserSession(request_token)){
+            is CallResult.CallFailure -> _loginState.value=CallState.FailureState(response.msg,response.code)
+            is CallResult.CallSuccess -> _loginState.value=CallState.SuccessState(response.data)
         }
     }
 
