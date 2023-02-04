@@ -35,5 +35,7 @@
     <string name="loginYourAccount">Login Your Account</string>
     <string name="doYouHaveAccount">Do you have an Account?</string>
     <string name="confirmPassHint">Confirm Password</string>
+    <string name="hello">Hello</string>
+    <string name="helloo">Hello,</string>
 
 </resources>

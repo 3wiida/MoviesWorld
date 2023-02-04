@@ -89,8 +89,14 @@ class LoginFragment : BaseFragment() {
         if(guestSessionId.isEmpty()){
             viewModel.createGuestSession()
         }else{
+            binding.guestLogo.visibility = View.INVISIBLE
+            binding.guestBtnTxt.visibility = View.INVISIBLE
+            binding.guestBtnPb.visibility = View.VISIBLE
             startActivity(Intent(requireActivity(), HomeActivity::class.java))
             activity?.finish()
+            binding.guestLogo.visibility = View.VISIBLE
+            binding.guestBtnTxt.visibility = View.VISIBLE
+            binding.guestBtnPb.visibility = View.INVISIBLE
         }
     }
 
@@ -136,7 +142,7 @@ class LoginFragment : BaseFragment() {
         fun success(data: GuestSessionResponse) {
             disableLoading()
             saveToPref(requireContext(),GUEST_SESSION_ID,data.guest_session_id)
-            saveToPref(requireContext(),GUEST_EXPIRE_DATE,data.expires_at)
+            //saveToPref(requireContext(),GUEST_EXPIRE_DATE,data.expires_at)
             saveToPref(requireContext(), LAST_LOGIN_WAS,"guest")
             startActivity(Intent(requireActivity(), HomeActivity::class.java))
             activity?.finish()

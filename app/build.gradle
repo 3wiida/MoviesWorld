@@ -87,7 +87,11 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
-    //lotti animation
-    def lottieVersion = "3.4.0"
-    implementation "com.airbnb.android:lottie:$lottieVersion"
+    //leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
+    //Circle Image View
+    implementation 'com.mikhaellopez:circularimageview:4.3.1'
+
+
 }
