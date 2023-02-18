@@ -29,14 +29,14 @@ object AppModule {
     fun provideClient():OkHttpClient{
 
         val httpClientLoggingInterceptor=HttpLoggingInterceptor{ msg ->
-            Log.d(TAG, "Interceptor : $msg")
+            Log.i("logInterceptor", "Interceptor : $msg")
         }
         httpClientLoggingInterceptor.level=HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient().newBuilder().apply {
             readTimeout(60,TimeUnit.SECONDS)
             writeTimeout(60,TimeUnit.SECONDS)
-            callTimeout(5,TimeUnit.SECONDS)
+            callTimeout(60,TimeUnit.SECONDS)
             addInterceptor {chain ->  
                 val newRequest=chain.request().newBuilder()
                 newRequest.addHeader("Accept", "application/json")

@@ -1,5 +1,6 @@
 package com.ewida.rickmorti.api
 
+import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovieResponse
 import com.ewida.rickmorti.model.guest_session_response.GuestSessionResponse
 import com.ewida.rickmorti.model.login_response.LoginResponse
 import com.ewida.rickmorti.model.request_token_response.RequestTokenResponse
@@ -8,6 +9,8 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiCalls {
 
@@ -30,5 +33,10 @@ interface ApiCalls {
     suspend fun createUserSession(
         @Field("request_token") request_token:String
     ):UserSessionResponse
+
+    @GET("discover/movie")
+    suspend fun discoverMovies(
+        @Query("page") page:Int
+    ):DiscoverMovieResponse
 
 }
