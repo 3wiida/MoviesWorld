@@ -1,5 +1,8 @@
 package com.ewida.rickmorti.ui.home.fragments.home
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,24 +13,45 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ewida.rickmorti.base.BaseFragment
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.DiscoverMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
 
     /** Vars **/
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var networkObserver: NetworkObserver
     private val viewModel: HomeViewModel by viewModels()
     private val discoverMoviesAdapter = DiscoverMoviesAdapter()
+    private var isFirstPageLoaded = false
 
     /** Functions **/
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initShimmerObservers()
+        networkObserver = NetworkObserver(requireContext())
+        collectState<Flow<PagingData<DiscoverMovies>>>(
+            viewModel.discoverMovieResponse,
+            Lifecycle.State.RESUMED,
+            { DiscoverMoviesCollector().loading() },
+            { msg, _ -> DiscoverMoviesCollector().failure(msg) },
+            { lifecycleScope.launch { DiscoverMoviesCollector().success(it) } }
+        )
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,39 +59,16 @@ class HomeFragment : BaseFragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         initRecyclers()
+        initNetworkObserver()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getDiscoverMovies()
-        collectState<Flow<PagingData<DiscoverMovies>>>(
-            viewModel.discoverMovieResponse,
-            Lifecycle.State.CREATED,
-            { DiscoverMoviesCollector().loading() },
-            { msg, _ -> DiscoverMoviesCollector().failure(msg) },
-            {
-                lifecycleScope.launchWhenCreated {
-                    DiscoverMoviesCollector().success(it)
-                }
-            }
-        )
 
-    }
-
-    private fun initRecyclers(){
-        //DiscoverRecycler
-        binding.discoverMovieRv.apply {
-            adapter=discoverMoviesAdapter
-            layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-            setHasFixedSize(true)
-        }
-    }
 
 
     private inner class DiscoverMoviesCollector {
         fun loading() {
-            Toast.makeText(requireContext(), "loading", Toast.LENGTH_SHORT).show()
+            binding.initialShimmerLayout.startShimmer()
         }
 
         fun failure(msg: String) {
@@ -79,6 +80,52 @@ class HomeFragment : BaseFragment() {
                 discoverMoviesAdapter.submitData(list)
             }
         }
+
     }
+
+    private fun initRecyclers() {
+        //DiscoverRecycler
+        binding.discoverMovieRv.apply {
+            adapter = discoverMoviesAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+        }
+
+    }
+    private fun initShimmerObservers() {
+        discoverMoviesAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.initialShimmerLayout.hideShimmer()
+                binding.initialShimmerLayout.stopShimmer()
+                binding.discoverMovieRv.visibility = View.VISIBLE
+                binding.initialShimmerLayout.visibility = View.GONE
+                discoverMoviesAdapter.unregisterAdapterDataObserver(this)
+            }
+        })
+    }
+    private fun initNetworkObserver() {
+        lifecycleScope.launch {
+            networkObserver.observe().collectLatest {
+                when (it) {
+                    NetworkObserver.Status.Available -> {
+                        if (!isFirstPageLoaded) {
+                            viewModel.getDiscoverMovies()
+                            isFirstPageLoaded = true
+                        }
+                    }
+                    NetworkObserver.Status.Unavailable -> showToast(requireContext(), "No Internet")
+                    NetworkObserver.Status.Lost -> showToast(
+                        requireContext(),
+                        "Network Connection Lost"
+                    )
+                    NetworkObserver.Status.Losing -> {}
+                }
+            }
+        }
+    }
+
 
 }

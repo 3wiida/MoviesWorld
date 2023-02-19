@@ -94,12 +94,34 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/initialShimmerLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12">
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <include layout="@layout/discover_movie_item_shimmer"/>
+                            <include layout="@layout/discover_movie_item_shimmer" />
+                            <include layout="@layout/discover_movie_item_shimmer"/>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/discoverMovieRv"
                     android:layout_width="0dp"
-
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/textView12" />
