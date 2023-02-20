@@ -39,4 +39,11 @@ interface ApiCalls {
         @Query("page") page:Int
     ):DiscoverMovieResponse
 
+    @GET("/trending/{media_type}/{time_window}")
+    suspend fun getTrendingMovies(
+        @Path("media_type") mediaType:String,
+        @Path("time_window") timeWindow:String,
+        @Query("page") page: Int
+    )
+
 }

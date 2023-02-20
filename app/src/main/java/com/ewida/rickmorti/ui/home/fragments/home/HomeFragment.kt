@@ -27,16 +27,17 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
 
     /** Vars **/
     private lateinit var binding: FragmentHomeBinding
+
     private lateinit var networkObserver: NetworkObserver
     private val viewModel: HomeViewModel by viewModels()
     private val discoverMoviesAdapter = DiscoverMoviesAdapter()
-    private var isFirstPageLoaded = false
 
     /** Functions **/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,26 +63,6 @@ class HomeFragment : BaseFragment() {
         initRecyclers()
         initNetworkObserver()
         return binding.root
-    }
-
-
-
-
-    private inner class DiscoverMoviesCollector {
-        fun loading() {
-            binding.initialShimmerLayout.startShimmer()
-        }
-
-        fun failure(msg: String) {
-            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-        }
-
-        suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
-            data.collectLatest { list ->
-                discoverMoviesAdapter.submitData(list)
-            }
-        }
-
     }
 
     private fun initRecyclers() {
@@ -113,10 +94,7 @@ class HomeFragment : BaseFragment() {
             networkObserver.observe().collectLatest { state->
                 when (state) {
                     NetworkObserver.Status.Available -> {
-                        if (!isFirstPageLoaded) {
-                            viewModel.getDiscoverMovies()
-                            isFirstPageLoaded = true
-                        }
+                        viewModel.getDiscoverMovies()
                     }
                     NetworkObserver.Status.Unavailable -> showToast(requireContext(),getString(R.string.networkProblem))
                     NetworkObserver.Status.Lost -> showToast(requireContext(),getString(R.string.networkProblem))
@@ -126,5 +104,19 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    /** Collectors **/
+    private inner class DiscoverMoviesCollector {
+        fun loading() {
+            binding.initialShimmerLayout.startShimmer()
+        }
+        fun failure(msg: String) {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+        }
+        suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
+            data.collectLatest { list ->
+                discoverMoviesAdapter.submitData(list)
+            }
+        }
 
+    }
 }

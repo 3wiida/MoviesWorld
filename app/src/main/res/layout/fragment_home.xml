@@ -14,7 +14,6 @@
         tools:context=".ui.home.HomeActivity">
 
         <ScrollView
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -85,7 +84,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
                 <TextView
-
                     android:id="@+id/textView12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -99,7 +97,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/initialShimmerLayout"
+                    android:id="@+id/discoverMovieShimmer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -130,6 +128,51 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+                <TextView
+                    android:id="@+id/trendingNowTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:text="@string/trendingNow"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/textMainColor"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/discoverMovieShimmer" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/trendingMovieShimmer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/trendingNowTv">
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <include layout="@layout/discover_movie_item_shimmer"/>
+                            <include layout="@layout/discover_movie_item_shimmer" />
+                            <include layout="@layout/discover_movie_item_shimmer"/>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/trendingMovieRv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/trendingNowTv" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
