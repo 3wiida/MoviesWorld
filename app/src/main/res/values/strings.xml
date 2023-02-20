@@ -38,4 +38,7 @@
     <string name="hello">Hello</string>
     <string name="helloo">Hello,</string>
 
+    <!-- Error Strings -->
+    <string name="networkProblem">Check Your Internet Connection</string>
+
 </resources>

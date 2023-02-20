@@ -27,4 +27,6 @@
 
     <!-- PlaceHolders-->
     <color name="shimmerColor">#9C9B9B</color>
+
+    <color name="snackBarColor">#18122B</color>
 </resources>

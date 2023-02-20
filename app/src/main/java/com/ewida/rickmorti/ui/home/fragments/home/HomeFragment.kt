@@ -14,10 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ewida.rickmorti.R
 import com.ewida.rickmorti.base.BaseFragment
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.DiscoverMoviesAdapter
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +39,6 @@ class HomeFragment : BaseFragment() {
     private var isFirstPageLoaded = false
 
     /** Functions **/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initShimmerObservers()
@@ -106,21 +107,19 @@ class HomeFragment : BaseFragment() {
             }
         })
     }
+
     private fun initNetworkObserver() {
         lifecycleScope.launch {
-            networkObserver.observe().collectLatest {
-                when (it) {
+            networkObserver.observe().collectLatest { state->
+                when (state) {
                     NetworkObserver.Status.Available -> {
                         if (!isFirstPageLoaded) {
                             viewModel.getDiscoverMovies()
                             isFirstPageLoaded = true
                         }
                     }
-                    NetworkObserver.Status.Unavailable -> showToast(requireContext(), "No Internet")
-                    NetworkObserver.Status.Lost -> showToast(
-                        requireContext(),
-                        "Network Connection Lost"
-                    )
+                    NetworkObserver.Status.Unavailable -> showToast(requireContext(),getString(R.string.networkProblem))
+                    NetworkObserver.Status.Lost -> showToast(requireContext(),getString(R.string.networkProblem))
                     NetworkObserver.Status.Losing -> {}
                 }
             }

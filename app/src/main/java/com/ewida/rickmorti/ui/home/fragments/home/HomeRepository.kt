@@ -16,7 +16,7 @@ import javax.inject.Inject
 class HomeRepository @Inject constructor(private val apiCalls: ApiCalls) {
     suspend fun getDiscoverMovies() = sendSafeApiCall {
         return@sendSafeApiCall Pager(
-            config = PagingConfig(pageSize = 20, enablePlaceholders = true),
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = { DiscoverMoviesPagingSource(apiCalls) }
         )
     }
