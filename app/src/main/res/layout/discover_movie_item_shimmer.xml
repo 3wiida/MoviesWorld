@@ -16,8 +16,8 @@
             android:id="@+id/dataConstraint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            app:cardBackgroundColor="#6E6C6C"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="@color/shimmerColor"
             app:cardCornerRadius="14dp"
             app:cardElevation="5dp">
 

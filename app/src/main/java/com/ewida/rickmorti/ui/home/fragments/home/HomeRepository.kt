@@ -2,14 +2,10 @@ package com.ewida.rickmorti.ui.home.fragments.home
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.ewida.rickmorti.api.ApiCalls
-import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
-import com.ewida.rickmorti.ui.home.fragments.home.adapters.DiscoverMoviesPagingSource
-import com.ewida.rickmorti.utils.result_wrapper.CallResult
-import com.ewida.rickmorti.utils.result_wrapper.CallState
+import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMoviesPagingSource
+import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMoviesPagingSource
 import com.ewida.rickmorti.utils.result_wrapper.sendSafeApiCall
-import kotlinx.coroutines.flow.Flow
 
 import javax.inject.Inject
 
@@ -18,6 +14,13 @@ class HomeRepository @Inject constructor(private val apiCalls: ApiCalls) {
         return@sendSafeApiCall Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false, prefetchDistance = 1),
             pagingSourceFactory = { DiscoverMoviesPagingSource(apiCalls) }
+        )
+    }
+
+    suspend fun getTrendingMovies() = sendSafeApiCall {
+        return@sendSafeApiCall Pager(
+            config = PagingConfig(pageSize = 20, prefetchDistance = 1,enablePlaceholders = false),
+            pagingSourceFactory = { TrendingMoviesPagingSource(apiCalls) }
         )
     }
 

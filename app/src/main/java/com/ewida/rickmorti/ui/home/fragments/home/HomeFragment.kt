@@ -15,14 +15,10 @@ import com.ewida.rickmorti.R
 import com.ewida.rickmorti.base.BaseFragment
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
-import com.ewida.rickmorti.ui.home.fragments.home.adapters.DiscoverMoviesAdapter
-import com.google.android.material.snackbar.Snackbar
+import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -66,7 +62,7 @@ class HomeFragment : BaseFragment() {
 
     private inner class DiscoverMoviesCollector {
         fun loading() {
-            binding.initialShimmerLayout.startShimmer()
+            binding.discoverMovieShimmer.startShimmer()
         }
 
         fun failure(msg: String) {
@@ -96,10 +92,10 @@ class HomeFragment : BaseFragment() {
             RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                binding.initialShimmerLayout.hideShimmer()
-                binding.initialShimmerLayout.stopShimmer()
+                binding.discoverMovieShimmer.hideShimmer()
+                binding.discoverMovieShimmer.stopShimmer()
                 binding.discoverMovieRv.visibility = View.VISIBLE
-                binding.initialShimmerLayout.visibility = View.GONE
+                binding.discoverMovieShimmer.visibility = View.INVISIBLE
                 discoverMoviesAdapter.unregisterAdapterDataObserver(this)
             }
         })

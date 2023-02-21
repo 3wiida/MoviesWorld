@@ -43,5 +43,6 @@
 
     <!-- Home Screen -->
     <string name="trendingNow">Trending Now</string>
+    <string name="discover">Discover</string>
 
 </resources>

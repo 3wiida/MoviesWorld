@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="35dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Discover"
+                    android:text="@string/discover"
                     android:textColor="@color/textMainColor"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -157,9 +157,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                            <include layout="@layout/discover_movie_item_shimmer"/>
-                            <include layout="@layout/discover_movie_item_shimmer" />
-                            <include layout="@layout/discover_movie_item_shimmer"/>
+                            <include layout="@layout/trending_movie_item_shimmer"/>
+                            <include layout="@layout/trending_movie_item_shimmer" />
+                            <include layout="@layout/trending_movie_item_shimmer"/>
 
                         </LinearLayout>
                     </HorizontalScrollView>
@@ -170,6 +170,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@+id/guideline2"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/trendingNowTv" />

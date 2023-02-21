@@ -1,11 +1,9 @@
-package com.ewida.rickmorti.ui.home.fragments.home.adapters
+package com.ewida.rickmorti.ui.home.fragments.home.adapters.discover
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ewida.rickmorti.api.ApiCalls
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
-import java.io.IOException
-import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class DiscoverMoviesPagingSource @Inject constructor(private val apiCalls: ApiCalls) :
