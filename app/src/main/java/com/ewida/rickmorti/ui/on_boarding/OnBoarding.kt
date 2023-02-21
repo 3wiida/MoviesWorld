@@ -21,6 +21,7 @@ class OnBoarding : AppCompatActivity() {
 
     private fun initMainClicks(){
         binding.getStartedBtn.setOnClickListener {
+            binding.getStartedBtn.changeLoading(1)
             startActivity(Intent(this,AuthActivity::class.java))
             finish()
         }

@@ -41,4 +41,7 @@
     <!-- Error Strings -->
     <string name="networkProblem">Check Your Internet Connection</string>
 
+    <!-- Home Screen -->
+    <string name="trendingNow">Trending Now</string>
+
 </resources>

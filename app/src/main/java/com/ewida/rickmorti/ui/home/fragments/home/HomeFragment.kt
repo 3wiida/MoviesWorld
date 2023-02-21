@@ -16,9 +16,13 @@ import com.ewida.rickmorti.base.BaseFragment
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.DiscoverMoviesAdapter
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -55,6 +59,26 @@ class HomeFragment : BaseFragment() {
         initRecyclers()
         initNetworkObserver()
         return binding.root
+    }
+
+
+
+
+    private inner class DiscoverMoviesCollector {
+        fun loading() {
+            binding.initialShimmerLayout.startShimmer()
+        }
+
+        fun failure(msg: String) {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+        }
+
+        suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
+            data.collectLatest { list ->
+                discoverMoviesAdapter.submitData(list)
+            }
+        }
+
     }
 
     private fun initRecyclers() {
@@ -100,21 +124,4 @@ class HomeFragment : BaseFragment() {
     }
 
 
-    /** Collectors **/
-    private inner class DiscoverMoviesCollector {
-        fun loading() {
-            binding.initialShimmerLayout.startShimmer()
-        }
-
-        fun failure(msg: String) {
-            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-        }
-
-        suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
-            data.collectLatest { list ->
-                discoverMoviesAdapter.submitData(list)
-            }
-        }
-
-    }
 }
