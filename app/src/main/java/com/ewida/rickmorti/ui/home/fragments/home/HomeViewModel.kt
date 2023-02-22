@@ -21,19 +21,37 @@ class HomeViewModel @Inject constructor(private val repo: HomeRepository) : Base
     private val _discoverMoviesResponse = MutableStateFlow<CallState>(CallState.EmptyState)
     val discoverMovieResponse = _discoverMoviesResponse.asStateFlow()
 
+    private val _trendingMoviesResponse = MutableStateFlow<CallState>(CallState.EmptyState)
+    val trendingMoviesResponse = _trendingMoviesResponse.asStateFlow()
+
     /** Functions **/
-    fun getDiscoverMovies(){
-        viewModelScope.launch(Dispatchers.IO){
-            _discoverMoviesResponse.value=CallState.LoadingState
-            when(val response=repo.getDiscoverMovies()){
-                is CallResult.CallFailure -> _discoverMoviesResponse.value=CallState.FailureState(response.msg,response.code)
+    fun getDiscoverMovies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _discoverMoviesResponse.value = CallState.LoadingState
+            when (val response = repo.getDiscoverMovies()) {
+                is CallResult.CallFailure -> _discoverMoviesResponse.value =
+                    CallState.FailureState(msg = response.msg, code = response.code)
                 is CallResult.CallSuccess -> {
-                    val data=response.data.flow
-                    _discoverMoviesResponse.value=CallState.SuccessState(data)
+                    val data = response.data.flow
+                    _discoverMoviesResponse.value = CallState.SuccessState(data)
                 }
             }
         }
     }
 
+    fun getTrendingMovies(mediaType: String, timeWindow: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _discoverMoviesResponse.value = CallState.LoadingState
+            when (val response =
+                repo.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)) {
+                is CallResult.CallFailure -> _trendingMoviesResponse.value =
+                    CallState.FailureState(msg = response.msg, code = response.code)
+                is CallResult.CallSuccess -> {
+                    val data = response.data.flow
+                    _trendingMoviesResponse.value = CallState.SuccessState(data = data)
+                }
+            }
+        }
+    }
 
 }

@@ -33,24 +33,26 @@
 
         <TextView
             android:id="@+id/movieName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
             android:textColor="@color/textMainColor"
-            android:textSize="16sp"
+            android:textSize="14sp"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/dataConstraint"
             app:layout_constraintStart_toStartOf="@+id/dataConstraint"
             app:layout_constraintTop_toBottomOf="@+id/dataConstraint" />
 
         <TextView
-            android:id="@+id/movieTypes"
-            android:layout_width="wrap_content"
+            android:id="@+id/movieReleasedYear"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
             android:textColor="@color/textSecondaryColor"
             android:textSize="12sp"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/dataConstraint"
             app:layout_constraintStart_toStartOf="@+id/dataConstraint"
             app:layout_constraintTop_toBottomOf="@+id/movieName" />

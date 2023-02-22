@@ -15,7 +15,9 @@ import com.ewida.rickmorti.R
 import com.ewida.rickmorti.base.BaseFragment
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
+import com.ewida.rickmorti.model.trending_movie_response.TrendingMovies
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMoviesAdapter
+import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -29,7 +31,10 @@ class HomeFragment : BaseFragment() {
     private lateinit var networkObserver: NetworkObserver
     private val viewModel: HomeViewModel by viewModels()
     private val discoverMoviesAdapter = DiscoverMoviesAdapter()
+    private val trendingMoviesAdapter = TrendingMoviesAdapter()
     private var isFirstPageLoaded = false
+    private val mediaType="movie"
+    private val timeWindow="day"
 
     /** Functions **/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,11 +42,19 @@ class HomeFragment : BaseFragment() {
         initShimmerObservers()
         networkObserver = NetworkObserver(requireContext())
         collectState<Flow<PagingData<DiscoverMovies>>>(
-            viewModel.discoverMovieResponse,
-            Lifecycle.State.RESUMED,
-            { DiscoverMoviesCollector().loading() },
-            { msg, _ -> DiscoverMoviesCollector().failure(msg) },
-            { lifecycleScope.launch { DiscoverMoviesCollector().success(it) } }
+            stateFlow = viewModel.discoverMovieResponse,
+            state = Lifecycle.State.CREATED,
+            loading = { DiscoverMoviesCollector().loading() },
+            failure = { msg, _ -> DiscoverMoviesCollector().failure(msg) },
+            success = { lifecycleScope.launch { DiscoverMoviesCollector().success(it) } }
+        )
+
+        collectState<Flow<PagingData<TrendingMovies>>>(
+            stateFlow = viewModel.trendingMoviesResponse,
+            state = Lifecycle.State.CREATED,
+            loading = {TrendingMoviesCollector().loading()},
+            failure = {msg,_->TrendingMoviesCollector().failure(msg)},
+            success = {lifecycleScope.launch { TrendingMoviesCollector().success(it) }}
         )
     }
 
@@ -57,26 +70,6 @@ class HomeFragment : BaseFragment() {
         return binding.root
     }
 
-
-
-
-    private inner class DiscoverMoviesCollector {
-        fun loading() {
-            binding.discoverMovieShimmer.startShimmer()
-        }
-
-        fun failure(msg: String) {
-            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-        }
-
-        suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
-            data.collectLatest { list ->
-                discoverMoviesAdapter.submitData(list)
-            }
-        }
-
-    }
-
     private fun initRecyclers() {
         //DiscoverRecycler
         binding.discoverMovieRv.apply {
@@ -86,7 +79,14 @@ class HomeFragment : BaseFragment() {
             setHasFixedSize(true)
         }
 
+        //TrendingMovies
+        binding.trendingMovieRv.apply {
+            adapter=trendingMoviesAdapter
+            layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            setHasFixedSize(true)
+        }
     }
+
     private fun initShimmerObservers() {
         discoverMoviesAdapter.registerAdapterDataObserver(object :
             RecyclerView.AdapterDataObserver() {
@@ -99,6 +99,17 @@ class HomeFragment : BaseFragment() {
                 discoverMoviesAdapter.unregisterAdapterDataObserver(this)
             }
         })
+
+        trendingMoviesAdapter.registerAdapterDataObserver(object :RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.trendingMovieShimmer.hideShimmer()
+                binding.trendingMovieShimmer.startShimmer()
+                binding.trendingMovieRv.visibility=View.VISIBLE
+                binding.trendingMovieShimmer.visibility=View.INVISIBLE
+                trendingMoviesAdapter.unregisterAdapterDataObserver(this)
+            }
+        })
     }
 
     private fun initNetworkObserver() {
@@ -108,6 +119,7 @@ class HomeFragment : BaseFragment() {
                     NetworkObserver.Status.Available -> {
                         if (!isFirstPageLoaded) {
                             viewModel.getDiscoverMovies()
+                            viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
                             isFirstPageLoaded = true
                         }
                     }
@@ -119,5 +131,31 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-
+    /** Collectors **/
+    private inner class DiscoverMoviesCollector {
+        fun loading() {
+            binding.discoverMovieShimmer.startShimmer()
+        }
+        fun failure(msg: String) {
+            showToast(requireContext(),msg)
+        }
+        suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
+            data.collectLatest { list ->
+                discoverMoviesAdapter.submitData(list)
+            }
+        }
+    }
+    private inner class TrendingMoviesCollector{
+        fun loading(){
+            binding.trendingMovieShimmer.startShimmer()
+        }
+        fun failure(msg: String){
+            showToast(requireContext(),msg)
+        }
+        suspend fun success(data:Flow<PagingData<TrendingMovies>>){
+            data.collectLatest {list->
+                trendingMoviesAdapter.submitData(list)
+            }
+        }
+    }
 }

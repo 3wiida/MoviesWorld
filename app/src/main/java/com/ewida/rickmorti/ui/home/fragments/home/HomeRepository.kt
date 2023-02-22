@@ -13,14 +13,20 @@ class HomeRepository @Inject constructor(private val apiCalls: ApiCalls) {
     suspend fun getDiscoverMovies() = sendSafeApiCall {
         return@sendSafeApiCall Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false, prefetchDistance = 1),
-            pagingSourceFactory = { DiscoverMoviesPagingSource(apiCalls) }
+            pagingSourceFactory = { DiscoverMoviesPagingSource(apiCalls = apiCalls) }
         )
     }
 
-    suspend fun getTrendingMovies() = sendSafeApiCall {
+    suspend fun getTrendingMovies(mediaType: String, timeWindow: String) = sendSafeApiCall {
         return@sendSafeApiCall Pager(
-            config = PagingConfig(pageSize = 20, prefetchDistance = 1,enablePlaceholders = false),
-            pagingSourceFactory = { TrendingMoviesPagingSource(apiCalls) }
+            config = PagingConfig(pageSize = 20, prefetchDistance = 1, enablePlaceholders = false),
+            pagingSourceFactory = {
+                TrendingMoviesPagingSource(
+                    apiCalls = apiCalls,
+                    mediaType = mediaType,
+                    timeWindow = timeWindow
+                )
+            }
         )
     }
 

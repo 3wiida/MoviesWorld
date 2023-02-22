@@ -4,13 +4,15 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.ewida.rickmorti.R
 import com.ewida.rickmorti.custom_view.MovieWorldEditText
 
 @BindingAdapter(value = ["setImageUrl"])
 fun ImageView.bindImageUrl(url: String?) {
+    val requestData=Glide.with(this).asDrawable().sizeMultiplier(0.05f)
     if (!url.isNullOrBlank()) {
-        Glide.with(context).load(url).placeholder(R.drawable.placeholder).into(this)
+        Glide.with(this).load(url).thumbnail(requestData).transition(withCrossFade()).into(this)
     }
 }
 
