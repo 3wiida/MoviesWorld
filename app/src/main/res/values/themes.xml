@@ -46,5 +46,10 @@
         <item name="cornerSize">14dp</item>
     </style>
 
+    <style name="bottomNavTextStyle">
+        <item name="fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textColor">@color/textMainColor</item>
+    </style>
+
 
 </resources>

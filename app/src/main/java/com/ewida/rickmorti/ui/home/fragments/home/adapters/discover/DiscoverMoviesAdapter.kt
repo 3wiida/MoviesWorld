@@ -47,4 +47,6 @@ class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdap
         return ViewHolder(binding)
     }
 
+
+
 }

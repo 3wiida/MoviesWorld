@@ -11,6 +11,7 @@
     <!-- Main Colors -->
     <color name="mainAppColor">#1F203E</color>
     <color name="secondaryAppColor">#546EE5</color>
+    <color name="thirdAppColor">#838C9F</color>
 
     <!-- Button Colors -->
     <color name="buttonMainColor">#546EE5</color>
@@ -28,5 +29,8 @@
     <!-- PlaceHolders-->
     <color name="shimmerColor">#9C9B9B</color>
 
-    <color name="snackBarColor">#18122B</color>
+    <!-- Bottom Navigation Color -->
+    <color name="bottomNavBgColor">#2E3350</color>
+    <color name="bottomNavTextColor">#F9FAFA</color>
+    <color name="bottomNavRippleColor">#546EE5</color>
 </resources>

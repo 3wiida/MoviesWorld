@@ -1,17 +1,13 @@
 package com.ewida.rickmorti.ui.home.fragments.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ewida.rickmorti.R
 import com.ewida.rickmorti.base.BaseFragment
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
@@ -24,23 +20,31 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     /** Vars **/
-    private lateinit var binding: FragmentHomeBinding
-    private lateinit var networkObserver: NetworkObserver
-    private val viewModel: HomeViewModel by viewModels()
     private val discoverMoviesAdapter = DiscoverMoviesAdapter()
     private val trendingMoviesAdapter = TrendingMoviesAdapter()
-    private var isFirstPageLoaded = false
-    private val mediaType="movie"
-    private val timeWindow="day"
+    private val mediaType = "movie"
+    private val timeWindow = "day"
+    private var shimmerFlag = true
+    override val viewModel: HomeViewModel by viewModels()
+
 
     /** Functions **/
+    override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
+    override fun sendCalls() {
+        viewModel.getDiscoverMovies()
+        viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+    }
+
+    override fun setUpViews() {
+        initRecyclers()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initShimmerObservers()
-        networkObserver = NetworkObserver(requireContext())
         collectState<Flow<PagingData<DiscoverMovies>>>(
             stateFlow = viewModel.discoverMovieResponse,
             state = Lifecycle.State.CREATED,
@@ -52,22 +56,28 @@ class HomeFragment : BaseFragment() {
         collectState<Flow<PagingData<TrendingMovies>>>(
             stateFlow = viewModel.trendingMoviesResponse,
             state = Lifecycle.State.CREATED,
-            loading = {TrendingMoviesCollector().loading()},
-            failure = {msg,_->TrendingMoviesCollector().failure(msg)},
-            success = {lifecycleScope.launch { TrendingMoviesCollector().success(it) }}
+            loading = { TrendingMoviesCollector().loading() },
+            failure = { msg, _ -> TrendingMoviesCollector().failure(msg) },
+            success = { lifecycleScope.launch { TrendingMoviesCollector().success(it) } }
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if(shimmerFlag){
+            binding.discoverMovieShimmer.visibility=View.VISIBLE
+            binding.trendingMovieShimmer.visibility=View.VISIBLE
+        }else{
+            binding.discoverMovieShimmer.visibility=View.INVISIBLE
+            binding.trendingMovieShimmer.visibility=View.INVISIBLE
+        }
+    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        initRecyclers()
-        initNetworkObserver()
-        return binding.root
+    override fun onDestroyView() {
+        binding.discoverMovieRv.adapter = null
+        binding.trendingMovieRv.adapter = null
+        shimmerFlag=false
+        super.onDestroyView()
     }
 
     private fun initRecyclers() {
@@ -75,14 +85,23 @@ class HomeFragment : BaseFragment() {
         binding.discoverMovieRv.apply {
             adapter = discoverMoviesAdapter
             layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(
+                    binding.discoverMovieRv.context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
             setHasFixedSize(true)
         }
 
         //TrendingMovies
         binding.trendingMovieRv.apply {
-            adapter=trendingMoviesAdapter
-            layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = trendingMoviesAdapter
+            layoutManager =
+                LinearLayoutManager(
+                    binding.trendingMovieRv.context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
             setHasFixedSize(true)
         }
     }
@@ -100,62 +119,46 @@ class HomeFragment : BaseFragment() {
             }
         })
 
-        trendingMoviesAdapter.registerAdapterDataObserver(object :RecyclerView.AdapterDataObserver(){
+        trendingMoviesAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.trendingMovieShimmer.hideShimmer()
                 binding.trendingMovieShimmer.startShimmer()
-                binding.trendingMovieRv.visibility=View.VISIBLE
-                binding.trendingMovieShimmer.visibility=View.INVISIBLE
+                binding.trendingMovieRv.visibility = View.VISIBLE
+                binding.trendingMovieShimmer.visibility = View.INVISIBLE
                 trendingMoviesAdapter.unregisterAdapterDataObserver(this)
             }
         })
     }
 
-    private fun initNetworkObserver() {
-        lifecycleScope.launch {
-            networkObserver.observe().collectLatest { state->
-                when (state) {
-                    NetworkObserver.Status.Available -> {
-                        if (!isFirstPageLoaded) {
-                            viewModel.getDiscoverMovies()
-                            viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
-                            isFirstPageLoaded = true
-                        }
-                    }
-                    NetworkObserver.Status.Unavailable -> showToast(requireContext(),getString(R.string.networkProblem))
-                    NetworkObserver.Status.Lost -> showToast(requireContext(),getString(R.string.networkProblem))
-                    NetworkObserver.Status.Losing -> {}
-                }
-            }
-        }
-    }
 
     /** Collectors **/
     private inner class DiscoverMoviesCollector {
-        fun loading() {
-            binding.discoverMovieShimmer.startShimmer()
-        }
+        fun loading() {}
+
         fun failure(msg: String) {
-            showToast(requireContext(),msg)
+            showToast(requireContext(), msg)
         }
+
         suspend fun success(data: Flow<PagingData<DiscoverMovies>>) {
             data.collectLatest { list ->
                 discoverMoviesAdapter.submitData(list)
             }
         }
     }
-    private inner class TrendingMoviesCollector{
-        fun loading(){
-            binding.trendingMovieShimmer.startShimmer()
+    private inner class TrendingMoviesCollector {
+        fun loading() {}
+
+        fun failure(msg: String) {
+            showToast(requireContext(), msg)
         }
-        fun failure(msg: String){
-            showToast(requireContext(),msg)
-        }
-        suspend fun success(data:Flow<PagingData<TrendingMovies>>){
-            data.collectLatest {list->
+
+        suspend fun success(data: Flow<PagingData<TrendingMovies>>) {
+            data.collectLatest { list ->
                 trendingMoviesAdapter.submitData(list)
             }
         }
     }
+
 }

@@ -106,5 +106,7 @@ dependencies {
     //shimmer effect
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
+    //Bottom Navigation
+    implementation 'nl.joery.animatedbottombar:library:1.1.0'
 
 }

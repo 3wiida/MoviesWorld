@@ -44,5 +44,10 @@
     <!-- Home Screen -->
     <string name="trendingNow">Trending Now</string>
     <string name="discover">Discover</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="lists">Lists</string>
+    <string name="profile">Profile</string>
+
 
 </resources>

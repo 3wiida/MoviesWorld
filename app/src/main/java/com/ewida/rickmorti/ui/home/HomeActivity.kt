@@ -2,21 +2,37 @@ package com.ewida.rickmorti.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.PopupMenu
+import androidx.navigation.fragment.NavHostFragment
 import com.ewida.rickmorti.R
-import com.ewida.rickmorti.common.Common.TAG
 import com.ewida.rickmorti.databinding.ActivityHomeBinding
-import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys
-import com.ewida.rickmorti.utils.shared_pref_utils.PrefUtils
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
-
-    lateinit var binding:ActivityHomeBinding
+    var binding: ActivityHomeBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setUpBottomNavigation()
+        setContentView(binding?.root)
 
+    }
+
+    private fun setUpBottomNavigation() {
+        val popupMenu = PopupMenu(this, null)
+        popupMenu.menuInflater.inflate(R.menu.bottom_nav_menu, popupMenu.menu)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.homeFragmentContainer) as NavHostFragment
+        binding?.bottomNavView?.setupWithNavController(
+            popupMenu.menu,
+            navHostFragment.navController
+        )
+    }
+
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
     }
 }

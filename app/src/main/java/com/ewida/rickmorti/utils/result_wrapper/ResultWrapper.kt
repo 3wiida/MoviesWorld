@@ -18,6 +18,7 @@ sealed class CallState{
     object LoadingState:CallState()
     data class SuccessState<T>(val data:T):CallState()
     data class FailureState(val msg: String?=null,val code: Int?=null):CallState()
+
 }
 
 suspend fun <T> sendSafeApiCall(apiCall: suspend () -> T): CallResult<T> {

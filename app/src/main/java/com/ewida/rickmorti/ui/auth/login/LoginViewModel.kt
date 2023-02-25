@@ -3,6 +3,7 @@ package com.ewida.rickmorti.ui.auth.login
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ewida.rickmorti.base.BaseViewModel
 import com.ewida.rickmorti.utils.form_validator.FormValidator
 import com.ewida.rickmorti.utils.result_wrapper.CallResult
 import com.ewida.rickmorti.utils.result_wrapper.CallState
@@ -14,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repo: LoginRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val repo: LoginRepository) : BaseViewModel() {
 
-    //Variables
+    /** Vars **/
     private val _loginState = MutableStateFlow<CallState>(CallState.EmptyState)
     val loginState = _loginState.asStateFlow()
 
@@ -25,7 +26,7 @@ class LoginViewModel @Inject constructor(private val repo: LoginRepository) : Vi
 
     val formErrors = ObservableArrayList<FormValidator.ErrorEnum>()
 
-    //Functions
+    /** Functions **/
     private suspend fun getRequestToken(username: String, password: String) {
         _loginState.value = CallState.LoadingState
         when (val response = repo.requestToken()) {
