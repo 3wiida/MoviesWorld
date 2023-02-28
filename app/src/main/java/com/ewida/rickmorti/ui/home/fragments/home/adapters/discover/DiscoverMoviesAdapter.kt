@@ -17,10 +17,7 @@ class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdap
 
     inner class ViewHolder(val binding:DiscoverMovieItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(item:DiscoverMovies){
-            val requestBuilder=Glide.with(binding.movieImage).asDrawable().sizeMultiplier(0.05f)
-            Glide.with(binding.movieImage).load(IMAGE_URL+item.poster_path).thumbnail(requestBuilder)
-                .transition(withCrossFade()).into(binding.movieImage)
-
+            binding.movieImage.setImage(IMAGE_URL+item.poster_path)
         }
     }
 
@@ -46,7 +43,5 @@ class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdap
         val binding=DiscoverMovieItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
-
-
 
 }

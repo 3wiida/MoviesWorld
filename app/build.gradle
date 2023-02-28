@@ -109,4 +109,9 @@ dependencies {
     //Bottom Navigation
     implementation 'nl.joery.animatedbottombar:library:1.1.0'
 
+    //Swipe Refresh Layout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    //lottie
+    implementation "com.airbnb.android:lottie:3.4.4"
 }

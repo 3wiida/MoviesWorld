@@ -12,7 +12,7 @@ import java.util.Locale
 
 object DateTimeUtils {
 
-    fun getDateDetails(date:String,pattern:String,local:Locale):MutableMap<String,String>{
+    fun getDateDetails(date:String,pattern:String,locale: Locale=Locale("en")):MutableMap<String,String>{
         val dateSections= mutableMapOf<String,String>()
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             val formatter=DateTimeFormatter.ofPattern(pattern)

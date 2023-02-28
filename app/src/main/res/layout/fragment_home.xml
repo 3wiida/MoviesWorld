@@ -11,170 +11,222 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeActivity">
-
-        <androidx.core.widget.NestedScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="83dp"
-                android:background="@color/mainAppColor">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.05" />
+                    android:paddingBottom="83dp"
+                    android:background="@color/mainAppColor">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.95" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.07" />
-
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/userImg"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/user_image_place_holder"
-                    app:civ_border_width="0dp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/helloo"
-                    android:textColor="@color/textSecondaryColor"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mahmoud 3wiida"
-                    android:textSize="18sp"
-                    android:textColor="@color/textMainColor"
-                    android:fontFamily="@font/poppins_medium"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/discover"
-                    android:textColor="@color/textMainColor"
-                    android:textSize="24sp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/discoverMovieShimmer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12">
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <include layout="@layout/discover_movie_item_shimmer"/>
-                            <include layout="@layout/discover_movie_item_shimmer" />
-                            <include layout="@layout/discover_movie_item_shimmer"/>
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.05" />
 
-                        </LinearLayout>
-                    </HorizontalScrollView>
-                </com.facebook.shimmer.ShimmerFrameLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/discoverMovieRv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-                <TextView
-                    android:id="@+id/trendingNowTv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text="@string/trendingNow"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textColor="@color/textMainColor"
-                    android:textSize="24sp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/discoverMovieShimmer" />
-
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/trendingMovieShimmer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/trendingNowTv">
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.95" />
 
-                            <include layout="@layout/trending_movie_item_shimmer"/>
-                            <include layout="@layout/trending_movie_item_shimmer" />
-                            <include layout="@layout/trending_movie_item_shimmer"/>
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.07" />
 
-                        </LinearLayout>
-                    </HorizontalScrollView>
-                </com.facebook.shimmer.ShimmerFrameLayout>
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/userImg"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/user_image_place_holder"
+                        app:civ_border_width="0dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/trendingMovieRv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/trendingNowTv" />
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/helloo"
+                        android:textColor="@color/textSecondaryColor"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_regular"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mahmoud 3wiida"
+                        android:textSize="18sp"
+                        android:textColor="@color/textMainColor"
+                        android:fontFamily="@font/poppins_medium"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="35dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/discover"
+                        android:textColor="@color/textMainColor"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/discoverMovieShimmer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/textView12">
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <include layout="@layout/discover_movie_item_shimmer"/>
+                                <include layout="@layout/discover_movie_item_shimmer" />
+                                <include layout="@layout/discover_movie_item_shimmer"/>
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/discoverMovieRv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+                    <TextView
+                        android:id="@+id/trendingNowTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="@string/trendingNow"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/textMainColor"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/discoverMovieShimmer" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/trendingMovieShimmer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/trendingNowTv">
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <include layout="@layout/trending_movie_item_shimmer"/>
+                                <include layout="@layout/trending_movie_item_shimmer" />
+                                <include layout="@layout/trending_movie_item_shimmer"/>
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/trendingMovieRv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/trendingNowTv" />
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/topRated"
+                        android:textColor="@color/textMainColor"
+                        android:textSize="24sp"
+                        android:layout_marginTop="25dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/trendingMovieShimmer" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/topRatedShimmer"
+                        android:layout_width="0dp"
+
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/textView15">
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <include layout="@layout/top_rated_movie_shimmer" />
+
+                                <include layout="@layout/top_rated_movie_shimmer" />
+
+                                <include layout="@layout/top_rated_movie_shimmer" />
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/topRatedMoviesRv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
+                        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

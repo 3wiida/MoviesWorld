@@ -4,6 +4,7 @@ import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovieResponse
 import com.ewida.rickmorti.model.guest_session_response.GuestSessionResponse
 import com.ewida.rickmorti.model.login_response.LoginResponse
 import com.ewida.rickmorti.model.request_token_response.RequestTokenResponse
+import com.ewida.rickmorti.model.top_rated_response.TopRatedMoviesResponse
 import com.ewida.rickmorti.model.trending_movie_response.TrendingMovieResponse
 import com.ewida.rickmorti.model.user_login_session.UserSessionResponse
 import retrofit2.http.Field
@@ -46,5 +47,10 @@ interface ApiCalls {
         @Path("time_window") timeWindow:String,
         @Query("page") page: Int
     ):TrendingMovieResponse
+
+    @GET("movie/top_rated")
+    suspend fun getTopRated(
+        @Query("page") page:Int
+    ):TopRatedMoviesResponse
 
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dataConstraint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@color/shimmerColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/movieImage"
+                android:layout_width="125dp"
+                android:layout_height="175dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/roundCornersImage" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/movieName"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:fontFamily="@font/poppins_medium"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/textMainColor"
+            android:textSize="14sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/text_shimmer_background"
+            app:layout_constraintEnd_toEndOf="@+id/dataConstraint"
+            app:layout_constraintStart_toStartOf="@+id/dataConstraint"
+            app:layout_constraintTop_toBottomOf="@+id/dataConstraint" />
+
+        <TextView
+            android:id="@+id/movieRate"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:layout_marginStart="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/textSecondaryColor"
+            android:textSize="12sp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/text_shimmer_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieName" />
+
+        <TextView
+            android:id="@+id/movieReleasedYear"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/textSecondaryColor"
+            android:textSize="12sp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/text_shimmer_background"
+            app:layout_constraintEnd_toEndOf="@+id/movieName"
+            app:layout_constraintTop_toBottomOf="@+id/movieName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

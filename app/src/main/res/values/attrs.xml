@@ -15,4 +15,13 @@
         <attr name="setInputType" format="integer"/>
         <attr name="boxDrawable" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="LoadingImage">
+        <attr name="isLoading" format="boolean"/>
+        <attr name="enableLoading" format="boolean"/>
+        <attr name="initialState" format="enum">
+            <enum name="loading" value="1"/>
+            <enum name="notLoading" value="0"/>
+        </attr>
+    </declare-styleable>
 </resources>
