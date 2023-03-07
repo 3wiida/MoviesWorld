@@ -33,4 +33,7 @@
     <color name="bottomNavBgColor">#2E3350</color>
     <color name="bottomNavTextColor">#F9FAFA</color>
     <color name="bottomNavRippleColor">#546EE5</color>
+
+    <!--  SearchView  -->
+    <color name="searchViewBackground">#502E3350</color>
 </resources>

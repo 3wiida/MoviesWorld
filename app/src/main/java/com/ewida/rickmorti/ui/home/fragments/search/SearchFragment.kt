@@ -1,21 +1,51 @@
 package com.ewida.rickmorti.ui.home.fragments.search
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.ewida.rickmorti.R
+import android.util.Log
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ewida.rickmorti.base.BaseFragment
+import com.ewida.rickmorti.common.Common.TAG
+import com.ewida.rickmorti.databinding.FragmentSearchBinding
+import com.ewida.rickmorti.model.category_model.Category
+import com.ewida.rickmorti.ui.home.fragments.search.adapters.CategoryAdapter
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment<FragmentSearchBinding,SearchViewModel>(){
+    private val categoryAdapter= CategoryAdapter()
+    override val viewModel: SearchViewModel by viewModels()
+    override fun getViewBinding() = FragmentSearchBinding.inflate(layoutInflater)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+    override fun sendCalls() {
+
     }
 
+    override fun setUpViews() {
+        initRecyclers()
+        initClicks()
+    }
 
+    private fun initRecyclers(){
+        categoryAdapter.submitList(prepareCategoryList())
+        binding.categoryRecycler.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        binding.categoryRecycler.adapter=categoryAdapter
+    }
+
+    private fun prepareCategoryList(): List<Category> {
+        return listOf(
+            Category("For You", 1,true),
+            Category("New Releases", 2),
+            Category("Popular Now", 3),
+            Category("Top Rated", 4),
+        )
+    }
+
+    private fun initClicks(){
+        categoryAdapter.onItemClick={ touchedItem ->
+            val newList = prepareCategoryList()
+            newList.forEach { item ->
+                item.isChecked = item.categoryId==touchedItem.categoryId
+            }
+            categoryAdapter.submitList(newList)
+        }
+    }
 }

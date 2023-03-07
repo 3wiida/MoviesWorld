@@ -24,4 +24,20 @@
             <enum name="notLoading" value="0"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="CustomSearchView">
+        <attr name="boxSearchIcon" format="reference"/>
+        <attr name="boxClearIcon" format="reference"/>
+        <attr name="boxPadding" format="integer"/>
+        <attr name="boxTextColor" format="color"/>
+        <attr name="boxTextSize" format="integer"/>
+        <attr name="boxFontFamily" format="reference"/>
+        <attr name="boxHint" format="string"/>
+        <attr name="boxBackground" format="color"/>
+        <attr name="boxHeight" format="integer"/>
+        <attr name="boxPaddingRight" format="integer"/>
+        <attr name="boxPaddingLeft" format="integer"/>
+        <attr name="boxPaddingTop" format="integer"/>
+        <attr name="boxPaddingBottom" format="integer"/>
+    </declare-styleable>
 </resources>

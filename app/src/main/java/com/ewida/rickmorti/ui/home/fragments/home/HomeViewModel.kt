@@ -9,13 +9,11 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: HomeRepository) : BaseViewModel() {
 
-    fun getDiscoverMovies() = repo.getDiscoverMovies().flow.cachedIn(viewModelScope)
+    fun getDiscoverMovies() = repo.getDiscoverMovies().flow
 
     fun getTrendingMovies(mediaType: String, timeWindow: String) =
-        repo.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow).flow.cachedIn(
-            viewModelScope
-        )
+        repo.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow).flow
 
-    fun getTopRatedMovies() = repo.getTopRatedMovies().flow.cachedIn(viewModelScope)
+    fun getTopRatedMovies() = repo.getTopRatedMovies().flow
 
 }

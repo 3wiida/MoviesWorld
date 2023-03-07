@@ -2,6 +2,7 @@ package com.ewida.rickmorti.utils
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.SearchView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -25,5 +26,4 @@ fun setBoxErrorText(editText:MovieWorldEditText,errorMsg: String?) {
         editText.getErrorTextView().visibility=View.GONE
         editText.getErrorTextView().text=""
     }
-
 }

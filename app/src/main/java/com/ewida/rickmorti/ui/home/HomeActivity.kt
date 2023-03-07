@@ -17,7 +17,6 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setUpBottomNavigation()
         setContentView(binding?.root)
-
     }
 
     private fun setUpBottomNavigation() {

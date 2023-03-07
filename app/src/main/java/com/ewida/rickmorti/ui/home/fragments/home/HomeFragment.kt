@@ -62,19 +62,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onResume() {
         super.onResume()
 
-        if(discoverMoviesAdapter.snapshot().items.isNotEmpty()){
+        if (discoverMoviesAdapter.snapshot().items.isNotEmpty()) {
             binding.discoverMovieShimmer.hideShimmer()
             binding.discoverMovieShimmer.stopShimmer()
             binding.discoverMovieShimmer.visibility = View.INVISIBLE
         }
 
-        if(trendingMoviesAdapter.snapshot().items.isNotEmpty()){
+        if (trendingMoviesAdapter.snapshot().items.isNotEmpty()) {
             binding.trendingMovieShimmer.hideShimmer()
             binding.trendingMovieShimmer.startShimmer()
             binding.trendingMovieShimmer.visibility = View.INVISIBLE
         }
 
-        if(topRatedMoviesAdapter.snapshot().items.isNotEmpty()){
+        if (topRatedMoviesAdapter.snapshot().items.isNotEmpty()) {
             binding.topRatedShimmer.hideShimmer()
             binding.topRatedShimmer.startShimmer()
             binding.topRatedShimmer.visibility = View.INVISIBLE
@@ -84,7 +84,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onDestroyView() {
         binding.discoverMovieRv.adapter = null
         binding.trendingMovieRv.adapter = null
-        binding.topRatedMoviesRv.adapter= null
+        binding.topRatedMoviesRv.adapter = null
         super.onDestroyView()
     }
 
@@ -103,6 +103,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     false
                 )
             setHasFixedSize(true)
+
         }
 
         //TrendingMovies
@@ -122,17 +123,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         //TopRatedMovies
         binding.topRatedMoviesRv.apply {
-            adapter=topRatedMoviesAdapter.withLoadStateHeaderAndFooter(
+            adapter = topRatedMoviesAdapter.withLoadStateHeaderAndFooter(
                 header = TopRatedMoviesLoadingStateAdapter(),
                 footer = TopRatedMoviesLoadingStateAdapter()
             )
-            layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
         }
     }
 
     private fun initShimmerObservers() {
-        discoverMoviesAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        discoverMoviesAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.discoverMovieShimmer.hideShimmer()
@@ -142,7 +145,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 discoverMoviesAdapter.unregisterAdapterDataObserver(this)
             }
         })
-        trendingMoviesAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        trendingMoviesAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.trendingMovieShimmer.hideShimmer()
@@ -152,7 +156,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 trendingMoviesAdapter.unregisterAdapterDataObserver(this)
             }
         })
-        topRatedMoviesAdapter.registerAdapterDataObserver(object :RecyclerView.AdapterDataObserver(){
+        topRatedMoviesAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.topRatedShimmer.hideShimmer()
@@ -181,13 +186,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel.getDiscoverMovies().collectLatest { discoverMoviesAdapter.submitData(it) }
         }
     }
+
     private fun collectTrendingMovies(mediaType: String, timeWindow: String) {
         lifecycleScope.launchWhenCreated {
             viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
                 .collectLatest { trendingMoviesAdapter.submitData(it) }
         }
     }
-    private fun collectTopRatedMovies(){
+
+    private fun collectTopRatedMovies() {
         lifecycleScope.launchWhenCreated {
             viewModel.getTopRatedMovies().collectLatest { topRatedMoviesAdapter.submitData(it) }
         }
