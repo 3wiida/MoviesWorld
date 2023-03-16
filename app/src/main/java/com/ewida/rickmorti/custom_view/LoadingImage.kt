@@ -2,26 +2,21 @@ package com.ewida.rickmorti.custom_view
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Handler
-import android.os.Looper
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.ewida.rickmorti.R
-import com.ewida.rickmorti.common.Common.TAG
 
 class LoadingImage(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet), RequestListener<Drawable> {
-    private val requestData = Glide.with(this).asDrawable().sizeMultiplier(0.05f)
     private var imageView: ImageView
     private var imageLoader: LottieAnimationView
 
@@ -38,13 +33,14 @@ class LoadingImage(context: Context, attributeSet: AttributeSet) :
         Glide.with(this).load(image).addListener(this).into(imageView)
     }
 
+
     override fun onLoadFailed(
         e: GlideException?,
         model: Any?,
         target: Target<Drawable>?,
         isFirstResource: Boolean
     ): Boolean {
-        Log.d(TAG, "onLoadFailed: ${e?.localizedMessage}")
+        startFailureAnimation(R.raw.image_loading_failure)
         return true
     }
 
@@ -55,12 +51,17 @@ class LoadingImage(context: Context, attributeSet: AttributeSet) :
         dataSource: DataSource?,
         isFirstResource: Boolean
     ): Boolean {
-        Handler(Looper.getMainLooper()).postDelayed({
-            Glide.with(this).load(resource).thumbnail(requestData)
-                .transition(DrawableTransitionOptions.withCrossFade()).into(imageView)
-        },1)
+        imageLoader.setAnimation(R.raw.image_loader)
+        imageLoader.playAnimation()
+        imageView.animation=AnimationUtils.loadAnimation(this.context,android.R.anim.fade_in)
+        imageView.setImageDrawable(resource)
         imageLoader.visibility = View.GONE
         return true
+    }
+
+    private fun startFailureAnimation(lottieAnimation:Int){
+        imageLoader.setAnimation(lottieAnimation)
+        imageLoader.playAnimation()
     }
 
 

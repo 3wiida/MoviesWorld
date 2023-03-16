@@ -12,17 +12,20 @@ import java.util.Locale
 
 object DateTimeUtils {
 
-    fun getDateDetails(date:String,pattern:String,locale: Locale=Locale("en")):MutableMap<String,String>{
+    fun getDateDetails(date:String?,pattern:String,locale: Locale=Locale("en")):MutableMap<String,String>{
         val dateSections= mutableMapOf<String,String>()
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            val formatter=DateTimeFormatter.ofPattern(pattern)
-            val dateDetails=LocalDate.parse(date,formatter)
-            dateSections[YEAR]=dateDetails.year.toString()
-            dateSections[MONTH]=dateDetails.month.toString()
-            dateSections[DAY_OF_MONTH]=dateDetails.dayOfMonth.toString()
-            dateSections[DAY_OF_WEEK]=dateDetails.dayOfWeek.toString()
-            dateSections[DAY_OF_YEAR]=dateDetails.dayOfYear.toString()
+        if(!date.isNullOrBlank()){
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                val formatter=DateTimeFormatter.ofPattern(pattern)
+                val dateDetails=LocalDate.parse(date,formatter)
+                dateSections[YEAR]=dateDetails.year.toString()
+                dateSections[MONTH]=dateDetails.month.toString()
+                dateSections[DAY_OF_MONTH]=dateDetails.dayOfMonth.toString()
+                dateSections[DAY_OF_WEEK]=dateDetails.dayOfWeek.toString()
+                dateSections[DAY_OF_YEAR]=dateDetails.dayOfYear.toString()
+            }
         }
+
         return dateSections
     }
 

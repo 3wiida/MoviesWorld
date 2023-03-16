@@ -16,7 +16,7 @@ class CategoryAdapter:ListAdapter<Category,CategoryAdapter.ItemViewHolder>(Compa
 
     var onItemClick: ((Category) -> Unit)? = null
 
-    inner class ItemViewHolder(private val binding:CategoryItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
+    inner class ItemViewHolder(val binding:CategoryItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(item:Category, context: Context){
             binding.categoryName.text=item.categoryName
             if(item.isChecked){
@@ -50,5 +50,6 @@ class CategoryAdapter:ListAdapter<Category,CategoryAdapter.ItemViewHolder>(Compa
             onItemClick?.invoke(item)
         }
     }
+
 
 }

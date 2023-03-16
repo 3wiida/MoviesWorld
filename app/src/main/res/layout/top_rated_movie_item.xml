@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="movie"
+            type="com.ewida.rickmorti.model.common_movie_response.CommonMovie" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +17,7 @@
             android:layout_width="125dp"
             android:layout_height="175dp"
             android:layout_marginEnd="18dp"
+            loadingImageUrl="@{movie.poster_path}"
             app:cardBackgroundColor="@color/shimmerColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +29,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
+            android:text="@{movie.title}"
             android:layout_marginTop="2dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -54,6 +58,7 @@
             android:layout_marginStart="3dp"
             android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
+            android:text="@{Double.toString(movie.vote_average)}"
             android:textAlignment="center"
             android:textColor="@color/textSecondaryColor"
             android:textSize="12sp"
@@ -72,6 +77,7 @@
             android:textAlignment="center"
             android:textColor="@color/textSecondaryColor"
             android:textSize="12sp"
+            releasedYear="@{movie.release_date}"
             android:layout_marginTop="-5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/movieName"

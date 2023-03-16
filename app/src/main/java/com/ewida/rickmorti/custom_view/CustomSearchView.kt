@@ -36,6 +36,9 @@ class CustomSearchView(context: Context, attributeSet: AttributeSet) :
     private val boxPaddingTop:Int
     private val boxPaddingBottom:Int
     private lateinit var doActionJob: Job
+    private val actionHandler:Handler by lazy{
+        Handler(Looper.getMainLooper())
+    }
 
     init {
         inflate(context, R.layout.search_view_layout, this)
@@ -68,6 +71,7 @@ class CustomSearchView(context: Context, attributeSet: AttributeSet) :
         initClicks()
     }
 
+
     private fun setUpView() {
         box.setPadding(boxPaddingLeft, boxPaddingTop, boxPaddingRight, boxPaddingBottom)
         searchEditText.textSize = boxTextSize.toFloat()
@@ -81,28 +85,32 @@ class CustomSearchView(context: Context, attributeSet: AttributeSet) :
         watchText(duration = 1)
     }
 
-    private fun getSearchQuery() = searchEditText.text
+    fun getSearchQuery() = searchEditText.text.toString()
 
-    private fun setSearchQuery(query: String) {
+    fun setSearchQuery(query: String) {
         searchEditText.setText(query)
     }
 
-
-    fun watchText(action: (suspend () -> Unit?)? = null, duration: Long) {
-        searchEditText.doAfterTextChanged {
-            if (getSearchQuery().isNotEmpty()) clearIcon.visibility =
-                View.VISIBLE
+     fun watchText(action: ((String) -> Unit) ?= null, duration: Long, loading:(()->Unit)?=null,emptyAction:(()->Unit)?=null) {
+        searchEditText.doAfterTextChanged { text->
+            actionHandler.removeCallbacksAndMessages(null)
+            if (getSearchQuery().isNotEmpty())
+                clearIcon.visibility = View.VISIBLE
             else
                 clearIcon.visibility = View.GONE
-            action?.let {
-                doActionJob = GlobalScope.launch(Dispatchers.IO) {
-                    delay(duration)
-                    it.invoke()
-                }
-                Handler(Looper.getMainLooper()).postDelayed({
-                    doActionJob.cancel()
-                }, duration + 3)
+
+            loading?.invoke()
+
+            if(text.toString().isEmpty()){
+                actionHandler.postDelayed({
+                    emptyAction?.invoke()
+                },1000)
+            }else{
+                actionHandler.postDelayed({
+                    action?.invoke(text.toString())
+                },duration)
             }
+
         }
     }
 
@@ -111,5 +119,6 @@ class CustomSearchView(context: Context, attributeSet: AttributeSet) :
             searchEditText.setText("")
         }
     }
+
 
 }

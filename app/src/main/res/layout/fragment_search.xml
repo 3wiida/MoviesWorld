@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainAppColor"
+        android:paddingBottom="83dp"
         tools:context=".ui.home.fragments.search.SearchFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -67,12 +68,40 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/resultsRecycler"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="15dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/categoryRecycler" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/searchLoader"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="83dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/categoryRecycler"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/search_loader" />
+
+        <com.ewida.rickmorti.custom_view.EmptyStateView
+            android:id="@+id/searchEmptyState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:animation="@raw/search_empty"
+            app:emptyViewText="@string/movieNotfound"
+            android:paddingBottom="83dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/categoryRecycler"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

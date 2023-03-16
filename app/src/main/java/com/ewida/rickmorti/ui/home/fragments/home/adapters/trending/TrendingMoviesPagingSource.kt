@@ -3,7 +3,7 @@ package com.ewida.rickmorti.ui.home.fragments.home.adapters.trending
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ewida.rickmorti.api.ApiCalls
-import com.ewida.rickmorti.model.trending_movie_response.TrendingMovies
+import com.ewida.rickmorti.model.common_movie_response.CommonMovie
 
 import javax.inject.Inject
 
@@ -11,15 +11,15 @@ class TrendingMoviesPagingSource @Inject constructor(
     private val apiCalls: ApiCalls,
     private val mediaType: String,
     private val timeWindow: String
-) : PagingSource<Int, TrendingMovies>() {
-    override fun getRefreshKey(state: PagingState<Int, TrendingMovies>): Int? {
+) : PagingSource<Int, CommonMovie>() {
+    override fun getRefreshKey(state: PagingState<Int, CommonMovie>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TrendingMovies> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CommonMovie> {
         val pageIndex = params.key ?: 1
         return try {
             val response = apiCalls.getTrendingMovies(

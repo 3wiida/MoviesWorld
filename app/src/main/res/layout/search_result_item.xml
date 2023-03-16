@@ -10,15 +10,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
 
         <com.ewida.rickmorti.custom_view.LoadingImage
             android:id="@+id/movieImage"
-            android:layout_width="125dp"
-            android:layout_height="175dp"
-            android:layout_marginEnd="18dp"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+
+
             loadingImageUrl="@{movie.poster_path}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,8 @@
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/movieImage"
             app:layout_constraintStart_toStartOf="@+id/movieImage"
-            app:layout_constraintTop_toBottomOf="@+id/movieImage" />
+            app:layout_constraintTop_toBottomOf="@+id/movieImage"/>
+
 
         <TextView
             android:id="@+id/movieReleasedYear"
@@ -50,7 +51,8 @@
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/movieImage"
             app:layout_constraintStart_toStartOf="@+id/movieImage"
-            app:layout_constraintTop_toBottomOf="@+id/movieName" />
+            app:layout_constraintTop_toBottomOf="@+id/movieName"
+            android:paddingBottom="10dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

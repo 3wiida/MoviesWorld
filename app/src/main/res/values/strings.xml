@@ -49,6 +49,7 @@
     <string name="lists">Lists</string>
     <string name="profile">Profile</string>
     <string name="topRated">Top Rated</string>
+    <string name="movieNotfound">Sorry, We Couldn\'t Find This Movie !!</string>
 
 
 </resources>

@@ -24,6 +24,9 @@ import kotlinx.coroutines.flow.collectLatest
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     /** Vars **/
+    private var discoverMoviesDataObserver:RecyclerView.AdapterDataObserver?=null
+    private var trendingMoviesDataObserver:RecyclerView.AdapterDataObserver?=null
+    private var topRatedMoviesDataObserver:RecyclerView.AdapterDataObserver?=null
     private val discoverMoviesAdapter = DiscoverMoviesAdapter()
     private val trendingMoviesAdapter = TrendingMoviesAdapter()
     private val topRatedMoviesAdapter = TopRatedAdapter()
@@ -35,8 +38,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     /** Functions **/
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
     override fun sendCalls() {
-        viewModel.getDiscoverMovies()
-        viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+        //viewModel.getDiscoverMovies()
+        //viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
     }
 
     override fun setUpViews() {
@@ -85,6 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         binding.discoverMovieRv.adapter = null
         binding.trendingMovieRv.adapter = null
         binding.topRatedMoviesRv.adapter = null
+        unregisterAdaptersObservers()
         super.onDestroyView()
     }
 
@@ -134,39 +138,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun initShimmerObservers() {
-        discoverMoviesAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+
+        discoverMoviesDataObserver = object :RecyclerView.AdapterDataObserver(){
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.discoverMovieShimmer.hideShimmer()
                 binding.discoverMovieShimmer.stopShimmer()
                 binding.discoverMovieRv.visibility = View.VISIBLE
                 binding.discoverMovieShimmer.visibility = View.INVISIBLE
-                discoverMoviesAdapter.unregisterAdapterDataObserver(this)
+                discoverMoviesDataObserver=null
             }
-        })
-        trendingMoviesAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        }
+
+        trendingMoviesDataObserver=object :RecyclerView.AdapterDataObserver(){
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.trendingMovieShimmer.hideShimmer()
                 binding.trendingMovieShimmer.startShimmer()
                 binding.trendingMovieRv.visibility = View.VISIBLE
                 binding.trendingMovieShimmer.visibility = View.INVISIBLE
-                trendingMoviesAdapter.unregisterAdapterDataObserver(this)
+                trendingMoviesDataObserver=null
+
             }
-        })
-        topRatedMoviesAdapter.registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
+        }
+
+        topRatedMoviesDataObserver=object :RecyclerView.AdapterDataObserver(){
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding.topRatedShimmer.hideShimmer()
                 binding.topRatedShimmer.startShimmer()
                 binding.topRatedShimmer.visibility = View.VISIBLE
                 binding.topRatedShimmer.visibility = View.INVISIBLE
-                topRatedMoviesAdapter.unregisterAdapterDataObserver(this)
+                topRatedMoviesDataObserver=null
             }
-        })
+        }
+
+        registerAdaptersObservers()
     }
 
     private fun observeRefresh() {
@@ -178,6 +185,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }, 1500)
             }
         }
+    }
+
+    private fun registerAdaptersObservers(){
+        discoverMoviesDataObserver?.let { discoverMoviesAdapter.registerAdapterDataObserver(it) }
+        trendingMoviesDataObserver?.let { trendingMoviesAdapter.registerAdapterDataObserver(it) }
+        topRatedMoviesDataObserver?.let { topRatedMoviesAdapter.registerAdapterDataObserver(it) }
+    }
+
+    private fun unregisterAdaptersObservers(){
+        discoverMoviesDataObserver?.let { discoverMoviesAdapter.unregisterAdapterDataObserver(it) }
+        trendingMoviesDataObserver?.let { trendingMoviesAdapter.unregisterAdapterDataObserver(it) }
+        topRatedMoviesDataObserver?.let { topRatedMoviesAdapter.unregisterAdapterDataObserver(it) }
     }
 
     /** Collectors **/
@@ -199,4 +218,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel.getTopRatedMovies().collectLatest { topRatedMoviesAdapter.submitData(it) }
         }
     }
+
 }

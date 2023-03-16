@@ -40,4 +40,9 @@
         <attr name="boxPaddingTop" format="integer"/>
         <attr name="boxPaddingBottom" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="EmptyStateView">
+        <attr name="animation" format="reference"/>
+        <attr name="emptyViewText" format="string"/>
+    </declare-styleable>
 </resources>

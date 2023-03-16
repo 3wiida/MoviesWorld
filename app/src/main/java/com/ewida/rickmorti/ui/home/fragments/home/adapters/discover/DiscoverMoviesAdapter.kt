@@ -15,11 +15,7 @@ class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdap
     MovieComparator
 ) {
 
-    inner class ViewHolder(val binding:DiscoverMovieItemBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(item:DiscoverMovies){
-            binding.movieImage.setImage(IMAGE_URL+item.poster_path)
-        }
-    }
+    inner class ViewHolder(val binding:DiscoverMovieItemBinding):RecyclerView.ViewHolder(binding.root)
 
     private object MovieComparator:DiffUtil.ItemCallback<DiscoverMovies>(){
         override fun areItemsTheSame(oldItem: DiscoverMovies, newItem: DiscoverMovies): Boolean {
@@ -34,9 +30,8 @@ class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item=getItem(position)
-        item?.let {
-            holder.bind(item = item)
-        }
+        holder.binding.movie=item
+        holder.binding.executePendingBindings()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
