@@ -108,10 +108,16 @@ dependencies {
 
     //Bottom Navigation
     implementation 'nl.joery.animatedbottombar:library:1.1.0'
+    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.9'
 
     //Swipe Refresh Layout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     //lottie
     implementation "com.airbnb.android:lottie:3.4.4"
+
+    //youtube player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
+
+
 }

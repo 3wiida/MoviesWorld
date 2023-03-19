@@ -12,10 +12,17 @@ import com.ewida.rickmorti.model.top_rated_response.TopRatedMovie
 class TopRatedAdapter :
     PagingDataAdapter<CommonMovie, TopRatedAdapter.MovieViewHolder>(Comparator) {
 
+    var onMovieClicked:((CommonMovie)->Unit)?=null
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val item=getItem(position)
         item?.let { movie ->
             holder.binding.movie=movie
+            holder.binding.apply {
+                movieName.isSelected=true
+            }
+            holder.itemView.setOnClickListener {
+                onMovieClicked?.invoke(movie)
+            }
         }
     }
 

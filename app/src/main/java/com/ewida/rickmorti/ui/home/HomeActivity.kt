@@ -28,6 +28,7 @@ class HomeActivity : AppCompatActivity() {
             popupMenu.menu,
             navHostFragment.navController
         )
+
     }
 
     override fun onDestroy() {

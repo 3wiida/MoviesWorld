@@ -6,6 +6,7 @@ import com.ewida.rickmorti.api.ApiCalls
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMoviesPagingSource
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.top_rated.TopRatedPagingSource
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMoviesPagingSource
+import com.ewida.rickmorti.utils.result_wrapper.sendSafeApiCall
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(private val apiCalls: ApiCalls) {
@@ -30,5 +31,5 @@ class HomeRepository @Inject constructor(private val apiCalls: ApiCalls) {
         pagingSourceFactory = { TopRatedPagingSource(apiCalls = apiCalls) }
     )
 
-
+    suspend fun getGenresList() = sendSafeApiCall { apiCalls.getMovieType() }
 }

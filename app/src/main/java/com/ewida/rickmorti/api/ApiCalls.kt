@@ -1,14 +1,13 @@
 package com.ewida.rickmorti.api
 
+import com.ewida.rickmorti.model.cast_response_model.CastResponse
 import com.ewida.rickmorti.model.common_movie_response.CommonMovieResponse
-import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovieResponse
+import com.ewida.rickmorti.model.genre_response_model.GenresResponse
 import com.ewida.rickmorti.model.guest_session_response.GuestSessionResponse
 import com.ewida.rickmorti.model.login_response.LoginResponse
+import com.ewida.rickmorti.model.movie_response_model.MovieResponse
 import com.ewida.rickmorti.model.request_token_response.RequestTokenResponse
-import com.ewida.rickmorti.model.top_rated_response.TopRatedMoviesResponse
-import com.ewida.rickmorti.model.trending_movie_response.TrendingMovieResponse
 import com.ewida.rickmorti.model.user_login_session.UserSessionResponse
-import org.intellij.lang.annotations.Language
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -41,7 +40,7 @@ interface ApiCalls {
     @GET("discover/movie")
     suspend fun discoverMovies(
         @Query("page") page:Int
-    ):DiscoverMovieResponse
+    ):CommonMovieResponse
 
     @GET("/3/trending/{media_type}/{time_window}")
     suspend fun getTrendingMovies(
@@ -77,4 +76,18 @@ interface ApiCalls {
         @Query("language") language: String,
         @Query("page") page:Int
     ):CommonMovieResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieById(
+        @Path("movie_id") movieId:Int
+    ):MovieResponse
+
+    @GET("genre/movie/list")
+    suspend fun getMovieType():GenresResponse
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCast(
+        @Path("movie_id") movieId:Int
+    ):CastResponse
+
 }

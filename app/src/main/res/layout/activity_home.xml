@@ -26,26 +26,24 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
-        <nl.joery.animatedbottombar.AnimatedBottomBar
+        <me.ibrahimsn.lib.SmoothBottomBar
             android:id="@+id/bottomNavView"
             android:layout_width="0dp"
             android:layout_height="70dp"
+            app:menu="@menu/bottom_nav_menu"
+            app:indicatorColor="@color/indicatorBottomViewColor"
+            app:indicatorRadius="10dp"
+            app:corners="top_left|top_right"
+            app:cornerRadius="18dp"
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
-            app:abb_tabs="@menu/bottom_nav_menu"
-            app:abb_selectedIndex="0"
-            app:abb_selectedTabType="text"
-            app:abb_tabColor="@color/thirdAppColor"
-            app:abb_tabColorSelected="@color/bottomNavTextColor"
-            app:abb_indicatorColor="@color/secondaryAppColor"
-            app:abb_indicatorMargin="25dp"
-            app:abb_indicatorAppearance="round"
-            app:abb_indicatorLocation="bottom"
-            android:background="@drawable/bottom_nav_background"
-            app:abb_textAppearance="@style/bottomNavTextStyle"
+            app:textSize="13sp"
+            app:iconSize="19dp"
+            app:sideMargins="30dp"
+            app:backgroundColor="@color/bottomNavBgColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/bottom_nav_background"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

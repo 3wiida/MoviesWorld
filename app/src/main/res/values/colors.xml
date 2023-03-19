@@ -38,4 +38,5 @@
 
     <!--  SearchView  -->
     <color name="searchViewBackground">#502E3350</color>
+    <color name="indicatorBottomViewColor">#50546EE5</color>
 </resources>

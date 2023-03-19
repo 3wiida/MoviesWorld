@@ -5,24 +5,22 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.ewida.rickmorti.common.Common.IMAGE_URL
 import com.ewida.rickmorti.databinding.DiscoverMovieItemBinding
+import com.ewida.rickmorti.model.common_movie_response.CommonMovie
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
 
-class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdapter.ViewHolder>(
+class DiscoverMoviesAdapter:PagingDataAdapter<CommonMovie, DiscoverMoviesAdapter.ViewHolder>(
     MovieComparator
 ) {
-
+    var onMovieClicked:((CommonMovie)->Unit)?=null
     inner class ViewHolder(val binding:DiscoverMovieItemBinding):RecyclerView.ViewHolder(binding.root)
 
-    private object MovieComparator:DiffUtil.ItemCallback<DiscoverMovies>(){
-        override fun areItemsTheSame(oldItem: DiscoverMovies, newItem: DiscoverMovies): Boolean {
+    private object MovieComparator:DiffUtil.ItemCallback<CommonMovie>(){
+        override fun areItemsTheSame(oldItem: CommonMovie, newItem: CommonMovie): Boolean {
             return oldItem.id==newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: DiscoverMovies, newItem: DiscoverMovies): Boolean {
+        override fun areContentsTheSame(oldItem: CommonMovie, newItem: CommonMovie): Boolean {
             return oldItem==newItem
         }
 
@@ -32,6 +30,11 @@ class DiscoverMoviesAdapter:PagingDataAdapter<DiscoverMovies, DiscoverMoviesAdap
         val item=getItem(position)
         holder.binding.movie=item
         holder.binding.executePendingBindings()
+        holder.itemView.setOnClickListener {
+            item?.let { movie->
+                onMovieClicked?.invoke(movie)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

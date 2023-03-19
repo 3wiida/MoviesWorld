@@ -65,5 +65,4 @@ object AppModule {
         return Bundle()
     }
 
-
 }

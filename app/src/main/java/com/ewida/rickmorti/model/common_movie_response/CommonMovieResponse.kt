@@ -1,5 +1,5 @@
 package com.ewida.rickmorti.model.common_movie_response
-
+import java.io.Serializable
 data class CommonMovieResponse(
     val page: Int,
     val results: List<CommonMovie>,
@@ -22,4 +22,4 @@ data class CommonMovie(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+):Serializable

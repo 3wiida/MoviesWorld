@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="actor"
+            type="com.ewida.rickmorti.model.cast_response_model.Cast" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.ewida.rickmorti.custom_view.LoadingImage
+            android:id="@+id/loadingImage2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:imageRadius="600"
+            loadingImageUrl="@{actor.profile_path}"
+
+            app:loadingAnimation="@raw/actor_loader" />
+
+        <TextView
+            android:id="@+id/actorName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@{actor.name}"
+            android:textAlignment="center"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textColor="@color/textMainColor"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/actorCharacter"
+            android:layout_marginTop="-2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text='@{"As "+actor.character}'
+            android:textAlignment="center"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:singleLine="true"
+            android:focusableInTouchMode="true"
+            android:textColor="@color/textMainColor"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+</layout>

@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
@@ -17,15 +18,27 @@ import com.ewida.rickmorti.R
 
 class LoadingImage(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet), RequestListener<Drawable> {
+    private val imageCard:CardView
     private var imageView: ImageView
     private var imageLoader: LottieAnimationView
+    private var imageLoadingAnimation:Int
+    private var imageRadius:Int
 
     init {
         inflate(context, R.layout.custom_loading_image_layout, this)
         val attrs = context.obtainStyledAttributes(attributeSet, R.styleable.LoadingImage)
+        imageRadius=attrs.getInteger(R.styleable.LoadingImage_imageRadius,-1)
+        imageLoadingAnimation=attrs.getResourceId(R.styleable.LoadingImage_loadingAnimation,-1)
         imageView = findViewById(R.id.imageContent)
         imageLoader = findViewById(R.id.imageLoader)
+        imageCard=findViewById(R.id.imageCard)
         attrs.recycle()
+        setupView()
+    }
+
+    private fun setupView(){
+        if(imageRadius!=-1) imageCard.radius=imageRadius.toFloat()
+        if(imageLoadingAnimation!=-1) imageLoader.setAnimation(imageLoadingAnimation)
     }
 
     fun setImage(image: Any) {

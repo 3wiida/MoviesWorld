@@ -3,20 +3,21 @@ package com.ewida.rickmorti.ui.home.fragments.home.adapters.discover
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ewida.rickmorti.api.ApiCalls
+import com.ewida.rickmorti.model.common_movie_response.CommonMovie
 import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
 import javax.inject.Inject
 
 class DiscoverMoviesPagingSource @Inject constructor(private val apiCalls: ApiCalls) :
-    PagingSource<Int, DiscoverMovies>() {
+    PagingSource<Int, CommonMovie>() {
 
-    override fun getRefreshKey(state: PagingState<Int, DiscoverMovies>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CommonMovie>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DiscoverMovies> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CommonMovie> {
         return try {
             val currentPage = params.key ?: 1
             val response = apiCalls.discoverMovies(currentPage)

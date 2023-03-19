@@ -1,32 +1,41 @@
 package com.ewida.rickmorti.ui.home.fragments.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
+import android.util.Log
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ewida.rickmorti.base.BaseFragment
+import com.ewida.rickmorti.common.Common.GENRES_LIST
+import com.ewida.rickmorti.common.Common.TAG
+import com.ewida.rickmorti.common.Keys.MOVIE_ID_KEY
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
+import com.ewida.rickmorti.model.genre_response_model.GenresResponse
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMovieLoadingStateAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMoviesAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.top_rated.TopRatedAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.top_rated.TopRatedMoviesLoadingStateAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMovieLoadingStateAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMoviesAdapter
+import com.ewida.rickmorti.ui.movie.MovieDataActivity
+import com.ewida.rickmorti.utils.inVisible
+import com.ewida.rickmorti.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     /** Vars **/
-    private var discoverMoviesDataObserver:RecyclerView.AdapterDataObserver?=null
-    private var trendingMoviesDataObserver:RecyclerView.AdapterDataObserver?=null
-    private var topRatedMoviesDataObserver:RecyclerView.AdapterDataObserver?=null
+    @Inject
+    lateinit var bundle: Bundle
     private val discoverMoviesAdapter = DiscoverMoviesAdapter()
     private val trendingMoviesAdapter = TrendingMoviesAdapter()
     private val topRatedMoviesAdapter = TopRatedAdapter()
@@ -38,57 +47,55 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     /** Functions **/
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
     override fun sendCalls() {
-        //viewModel.getDiscoverMovies()
-        //viewModel.getTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+        viewModel.getGenreList()
     }
 
     override fun setUpViews() {
         initRecyclers()
+        initMainClicks()
         observeRefresh()
         collectDiscoverMovies()
         collectTopRatedMovies()
         collectTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+        collectState<GenresResponse>(
+            stateFlow = viewModel.genreList,
+            state = Lifecycle.State.CREATED,
+            loading = {GenreListCollector().loading()},
+            failure = {msg,_->GenreListCollector().failure(msg)},
+            success = {data->GenreListCollector().success(data)}
+        )
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            discoverMoviesAdapter.refresh()
-            trendingMoviesAdapter.refresh()
-            topRatedMoviesAdapter.refresh()
-            refreshObserver.value = true
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initShimmerObservers()
+        initShimmer()
     }
 
     override fun onResume() {
         super.onResume()
 
         if (discoverMoviesAdapter.snapshot().items.isNotEmpty()) {
-            binding.discoverMovieShimmer.hideShimmer()
             binding.discoverMovieShimmer.stopShimmer()
-            binding.discoverMovieShimmer.visibility = View.INVISIBLE
+            binding.discoverMovieShimmer.inVisible()
         }
 
         if (trendingMoviesAdapter.snapshot().items.isNotEmpty()) {
-            binding.trendingMovieShimmer.hideShimmer()
-            binding.trendingMovieShimmer.startShimmer()
-            binding.trendingMovieShimmer.visibility = View.INVISIBLE
+            binding.trendingMovieShimmer.stopShimmer()
+            binding.trendingMovieShimmer.inVisible()
         }
 
         if (topRatedMoviesAdapter.snapshot().items.isNotEmpty()) {
-            binding.topRatedShimmer.hideShimmer()
-            binding.topRatedShimmer.startShimmer()
-            binding.topRatedShimmer.visibility = View.INVISIBLE
+            binding.topRatedShimmer.stopShimmer()
+            binding.topRatedShimmer.inVisible()
         }
+
     }
 
     override fun onDestroyView() {
         binding.discoverMovieRv.adapter = null
         binding.trendingMovieRv.adapter = null
         binding.topRatedMoviesRv.adapter = null
-        unregisterAdaptersObservers()
         super.onDestroyView()
     }
 
@@ -137,43 +144,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private fun initShimmerObservers() {
+    private fun initMainClicks() {
+        discoverMoviesAdapter.onMovieClicked = { movie ->
+            bundle.putInt(MOVIE_ID_KEY, movie.id)
+            startActivity(Intent(requireActivity(), MovieDataActivity::class.java))
+        }
 
-        discoverMoviesDataObserver = object :RecyclerView.AdapterDataObserver(){
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                binding.discoverMovieShimmer.hideShimmer()
-                binding.discoverMovieShimmer.stopShimmer()
-                binding.discoverMovieRv.visibility = View.VISIBLE
-                binding.discoverMovieShimmer.visibility = View.INVISIBLE
-                discoverMoviesDataObserver=null
+        trendingMoviesAdapter.onMovieClicked = { movie ->
+            bundle.putInt(MOVIE_ID_KEY, movie.id)
+            startActivity(Intent(requireActivity(), MovieDataActivity::class.java))
+        }
+
+        topRatedMoviesAdapter.onMovieClicked = { movie ->
+            bundle.putInt(MOVIE_ID_KEY, movie.id)
+            startActivity(Intent(requireActivity(), MovieDataActivity::class.java))
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            discoverMoviesAdapter.refresh()
+            trendingMoviesAdapter.refresh()
+            topRatedMoviesAdapter.refresh()
+            refreshObserver.value = true
+        }
+    }
+
+    private fun initShimmer(){
+        discoverMoviesAdapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.NotLoading && discoverMoviesAdapter.itemCount > 0) {
+                binding.discoverMovieShimmer.inVisible()
             }
         }
 
-        trendingMoviesDataObserver=object :RecyclerView.AdapterDataObserver(){
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                binding.trendingMovieShimmer.hideShimmer()
-                binding.trendingMovieShimmer.startShimmer()
-                binding.trendingMovieRv.visibility = View.VISIBLE
-                binding.trendingMovieShimmer.visibility = View.INVISIBLE
-                trendingMoviesDataObserver=null
-
+        trendingMoviesAdapter.addLoadStateListener { loadState->
+            if (loadState.refresh is LoadState.NotLoading && trendingMoviesAdapter.itemCount > 0) {
+                binding.trendingMovieShimmer.inVisible()
             }
         }
 
-        topRatedMoviesDataObserver=object :RecyclerView.AdapterDataObserver(){
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                binding.topRatedShimmer.hideShimmer()
-                binding.topRatedShimmer.startShimmer()
-                binding.topRatedShimmer.visibility = View.VISIBLE
-                binding.topRatedShimmer.visibility = View.INVISIBLE
-                topRatedMoviesDataObserver=null
+        topRatedMoviesAdapter.addLoadStateListener {loadState->
+            if(loadState.refresh is LoadState.NotLoading && topRatedMoviesAdapter.itemCount>0){
+                binding.topRatedShimmer.inVisible()
             }
         }
-
-        registerAdaptersObservers()
     }
 
     private fun observeRefresh() {
@@ -185,18 +197,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }, 1500)
             }
         }
-    }
-
-    private fun registerAdaptersObservers(){
-        discoverMoviesDataObserver?.let { discoverMoviesAdapter.registerAdapterDataObserver(it) }
-        trendingMoviesDataObserver?.let { trendingMoviesAdapter.registerAdapterDataObserver(it) }
-        topRatedMoviesDataObserver?.let { topRatedMoviesAdapter.registerAdapterDataObserver(it) }
-    }
-
-    private fun unregisterAdaptersObservers(){
-        discoverMoviesDataObserver?.let { discoverMoviesAdapter.unregisterAdapterDataObserver(it) }
-        trendingMoviesDataObserver?.let { trendingMoviesAdapter.unregisterAdapterDataObserver(it) }
-        topRatedMoviesDataObserver?.let { topRatedMoviesAdapter.unregisterAdapterDataObserver(it) }
     }
 
     /** Collectors **/
@@ -217,6 +217,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         lifecycleScope.launchWhenCreated {
             viewModel.getTopRatedMovies().collectLatest { topRatedMoviesAdapter.submitData(it) }
         }
+    }
+
+    private inner class GenreListCollector{
+        fun loading(){}
+        fun failure(msg:String){toast(msg)}
+        fun success(data:GenresResponse){ GENRES_LIST = data.genres.toMutableList() }
     }
 
 }

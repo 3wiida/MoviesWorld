@@ -6,7 +6,7 @@
     <data>
         <variable
             name="movie"
-            type="com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies" />
+            type="com.ewida.rickmorti.model.common_movie_response.CommonMovie" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

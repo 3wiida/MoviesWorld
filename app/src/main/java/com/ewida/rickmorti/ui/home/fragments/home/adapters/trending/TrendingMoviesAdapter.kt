@@ -7,13 +7,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ewida.rickmorti.databinding.TrendingMovieItemBinding
 import com.ewida.rickmorti.model.common_movie_response.CommonMovie
+import com.ewida.rickmorti.model.dicover_movie_response.DiscoverMovies
 
 class TrendingMoviesAdapter :
     PagingDataAdapter<CommonMovie, TrendingMoviesAdapter.TrendingMovieViewHolder>(Comparator) {
+
+    var onMovieClicked:((CommonMovie)->Unit)?=null
     override fun onBindViewHolder(holder: TrendingMovieViewHolder, position: Int) {
         val movie = getItem(position)
-        movie?.let {
+        movie?.let {movie->
             holder.binding.movie=movie
+            holder.itemView.setOnClickListener {
+                onMovieClicked?.invoke(movie)
+            }
         }
     }
 

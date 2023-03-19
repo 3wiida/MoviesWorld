@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="movie"
+            type="com.ewida.rickmorti.model.movie_response_model.MovieResponse" />
+
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
+
+        <variable
+            name="viewModel"
+            type="com.ewida.rickmorti.ui.movie.MovieDataViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.movie.MovieDataActivity">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mainAppColor">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.04" />
+
+                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                    android:id="@+id/movieVideoPlayer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:enableAutomaticInitialization="false" />
+
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/back_icon"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+                <ImageView
+                    android:id="@+id/unsavedIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity=""
+                    android:src="@drawable/unsaved_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+                <ImageView
+                    android:id="@+id/savedIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity=""
+                    android:visibility="invisible"
+                    android:src="@drawable/saved_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="-15dp"
+                    android:background="@drawable/movie_data_view_background"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/movieVideoPlayer" >
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/movieDataConstraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.05" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.95" />
+
+                        <com.ewida.rickmorti.custom_view.LoadingImage
+                            android:id="@+id/loadingImage"
+                            loadingImageUrl="@{movie.poster_path}"
+                            android:layout_width="125dp"
+                            android:layout_height="175dp"
+                            android:layout_marginTop="45dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline5"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/movieName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@{movie.original_title}"
+                            android:textColor="@color/textMainColor"
+                            android:textSize="20sp"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:singleLine="true"
+                            android:focusableInTouchMode="true"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintStart_toEndOf="@+id/loadingImage"
+                            app:layout_constraintTop_toTopOf="@+id/loadingImage"
+                            tools:text="Cruella" />
+
+                        <TextView
+                            android:id="@+id/movieYearAndType"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@{movie.getMovieTypes()}"
+                            android:textColor="@color/textMainColor"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintStart_toEndOf="@+id/loadingImage"
+                            app:layout_constraintTop_toBottomOf="@+id/movieName"
+                            tools:text="2021 , Crime , Comedy" />
+
+                        <TextView
+                            android:id="@+id/movieOverView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@{movie.overview}"
+                            android:textColor="@color/textSecondaryColor"
+                            android:textSize="12sp"
+                            android:maxLines="5"
+                            app:layout_constraintBottom_toBottomOf="@+id/loadingImage"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintStart_toStartOf="@+id/movieYearAndType"
+                            app:layout_constraintTop_toBottomOf="@+id/movieYearAndType"
+                            tools:text="Estella is a young and clever grifter who's determined to make a name for herself in the fashion world. She soon meets a pair of thieves who appreciate her appetite for mischief" />
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="14dp"
+                            android:src="@drawable/star"
+                            app:layout_constraintStart_toStartOf="@+id/guideline5"
+                            app:layout_constraintTop_toBottomOf="@+id/loadingImage" />
+
+                        <TextView
+                            android:id="@+id/movieRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{movie.getMovieRate()+" ("+movie.vote_count+")"}'
+                            android:layout_marginStart="6dp"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:paddingTop="3dp"
+                            android:textColor="@color/textMainColor"
+                            android:fontFamily="@font/poppins_regular"
+                            tools:text="4.7 (350)"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                            app:layout_constraintStart_toEndOf="@+id/imageView4"
+                            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="24dp"
+                            android:src="@drawable/icon_time"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                            app:layout_constraintStart_toEndOf="@+id/movieRate"
+                            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+                        <TextView
+                            android:id="@+id/movieDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="@{movie.getMovieTime()}"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:paddingTop="3dp"
+                            android:textColor="@color/textMainColor"
+                            android:fontFamily="@font/poppins_regular"
+                            tools:text="2 h 14 min"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                            app:layout_constraintStart_toEndOf="@+id/imageView5"
+                            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/textMainColor"
+                            android:textSize="16sp"
+                            android:text="Cast"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintStart_toStartOf="@+id/guideline5"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/castRecycler"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintStart_toStartOf="@+id/guideline5"
+                            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

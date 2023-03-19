@@ -19,6 +19,8 @@
     <declare-styleable name="LoadingImage">
         <attr name="isLoading" format="boolean"/>
         <attr name="enableLoading" format="boolean"/>
+        <attr name="imageRadius" format="integer"/>
+        <attr name="loadingAnimation" format="reference"/>
         <attr name="initialState" format="enum">
             <enum name="loading" value="1"/>
             <enum name="notLoading" value="0"/>

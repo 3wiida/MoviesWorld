@@ -29,4 +29,14 @@ object DateTimeUtils {
         return dateSections
     }
 
+    fun getMovieDuration(durationInMin:Int?):String{
+        var result=""
+        if(durationInMin!=null && durationInMin!=0){
+            val hours=(durationInMin/60)
+            val min=durationInMin-(hours*60)
+            result="$hours h $min min"
+        }
+        return result
+    }
+
 }
