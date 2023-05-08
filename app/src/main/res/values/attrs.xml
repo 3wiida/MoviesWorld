@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="MainBtn">
         <attr name="btnText" format="string" />
+        <attr name="btnBackground" format="reference" />
         <attr name="btnState" format="enum">
             <enum name="loading" value="1" />
             <enum name="noLoading" value="0" />
@@ -21,6 +22,7 @@
         <attr name="enableLoading" format="boolean"/>
         <attr name="imageRadius" format="integer"/>
         <attr name="loadingAnimation" format="reference"/>
+        <attr name="failureAnimation" format="reference"/>
         <attr name="initialState" format="enum">
             <enum name="loading" value="1"/>
             <enum name="notLoading" value="0"/>

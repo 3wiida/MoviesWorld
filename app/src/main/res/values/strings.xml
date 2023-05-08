@@ -50,6 +50,20 @@
     <string name="profile">Profile</string>
     <string name="topRated">Top Rated</string>
     <string name="movieNotfound">Sorry, We Couldn\'t Find This Movie !!</string>
+    <string name="watchNow">Watch Now</string>
+    <string name="cast">Cast</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="create_list">Create List</string>
+    <string name="list_name">List Name</string>
+    <string name="name">Name</string>
+    <string name="list_description">List Description</string>
+    <string name="listname">List Name</string>
+    <string name="create">Create</string>
+    <string name="ex_action_movies_favorites_etc">Ex: Action Movies, Favorites etc..</string>
+    <string name="your_list_description">Your list description</string>
+    <string name="you_need_to_login_to_use_this_feature">You need to login to use this feature</string>
+    <string name="login_require_second_text">This feature is allowed only for user accounts, click the login button to start get full features of this app</string>
+    <string name="add_list_button">add list button</string>
 
 
 </resources>

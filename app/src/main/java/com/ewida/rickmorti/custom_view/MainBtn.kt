@@ -10,7 +10,6 @@ import com.ewida.rickmorti.R
 
 class MainBtn(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet) {
-
     private var btnTv: TextView
     private var btnPb: ProgressBar
     private var mainBtn: ConstraintLayout
@@ -22,7 +21,8 @@ class MainBtn(context: Context, attributeSet: AttributeSet) :
         btnPb = findViewById(R.id.mainBtnPb)
         mainBtn = findViewById(R.id.mainBtn)
         btnTv.text = attrs.getString(R.styleable.MainBtn_btnText)
-        changeLoading(0)
+        val background=attrs.getResourceId(R.styleable.MainBtn_btnBackground,-1)
+        if(background!=-1) mainBtn.setBackgroundResource(background)
         attrs.recycle()
     }
 

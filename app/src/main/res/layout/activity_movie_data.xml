@@ -52,15 +52,17 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_percent="0.04" />
 
+
                 <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                     android:id="@+id/movieVideoPlayer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_height="0dp"
+                    app:enableAutomaticInitialization="false"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:enableAutomaticInitialization="false" />
-
+                    android:layout_marginBottom="-20dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageView
                     android:id="@+id/backBtn"
@@ -90,18 +92,19 @@
                     app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="-15dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/movie_data_view_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieVideoPlayer" >
+                    app:layout_constraintStart_toStartOf="parent">
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/movieDataConstraint"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline5"
                             android:layout_width="wrap_content"
@@ -130,14 +133,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
                             android:fontFamily="@font/poppins_regular"
+                            android:singleLine="true"
                             android:text="@{movie.original_title}"
                             android:textColor="@color/textMainColor"
                             android:textSize="20sp"
-                            android:ellipsize="marquee"
-                            android:focusable="true"
-                            android:singleLine="true"
-                            android:focusableInTouchMode="true"
                             app:layout_constraintEnd_toStartOf="@+id/guideline4"
                             app:layout_constraintStart_toEndOf="@+id/loadingImage"
                             app:layout_constraintTop_toTopOf="@+id/loadingImage"
@@ -163,10 +166,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
                             android:fontFamily="@font/poppins_regular"
+                            android:maxLines="5"
                             android:text="@{movie.overview}"
                             android:textColor="@color/textSecondaryColor"
                             android:textSize="12sp"
-                            android:maxLines="5"
                             app:layout_constraintBottom_toBottomOf="@+id/loadingImage"
                             app:layout_constraintEnd_toStartOf="@+id/guideline4"
                             app:layout_constraintStart_toStartOf="@+id/movieYearAndType"
@@ -186,17 +189,17 @@
                             android:id="@+id/movieRate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{movie.getMovieRate()+" ("+movie.vote_count+")"}'
                             android:layout_marginStart="6dp"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:paddingTop="3dp"
-                            android:textColor="@color/textMainColor"
                             android:fontFamily="@font/poppins_regular"
-                            tools:text="4.7 (350)"
+                            android:paddingTop="3dp"
+                            android:text='@{movie.getMovieRate()+" ("+movie.vote_count+")"}'
+                            android:textAlignment="center"
+                            android:textColor="@color/textMainColor"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                             app:layout_constraintStart_toEndOf="@+id/imageView4"
-                            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+                            app:layout_constraintTop_toTopOf="@+id/imageView4"
+                            tools:text="4.7 (350)" />
 
                         <ImageView
                             android:id="@+id/imageView5"
@@ -213,16 +216,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
-                            android:text="@{movie.getMovieTime()}"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:paddingTop="3dp"
-                            android:textColor="@color/textMainColor"
                             android:fontFamily="@font/poppins_regular"
-                            tools:text="2 h 14 min"
+                            android:paddingTop="3dp"
+                            android:text="@{movie.getMovieTime()}"
+                            android:textAlignment="center"
+                            android:textColor="@color/textMainColor"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                             app:layout_constraintStart_toEndOf="@+id/imageView5"
-                            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                            app:layout_constraintTop_toTopOf="@+id/imageView5"
+                            tools:text="2 h 14 min" />
 
                         <TextView
                             android:id="@+id/textView13"
@@ -230,9 +233,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:fontFamily="@font/poppins_bold"
+                            android:text="@string/cast"
                             android:textColor="@color/textMainColor"
                             android:textSize="16sp"
-                            android:text="Cast"
                             app:layout_constraintEnd_toStartOf="@+id/guideline4"
                             app:layout_constraintStart_toStartOf="@+id/guideline5"
                             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
@@ -246,6 +249,35 @@
                             app:layout_constraintEnd_toStartOf="@+id/guideline4"
                             app:layout_constraintStart_toStartOf="@+id/guideline5"
                             app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginBottom="40dp"
+                            android:weightSum="3"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintStart_toStartOf="@+id/guideline5"
+                            app:layout_constraintTop_toBottomOf="@id/castRecycler">
+
+                            <com.ewida.rickmorti.custom_view.MainBtn
+                                android:id="@+id/mainBtn2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                app:btnText="@string/watchNow"
+                                android:layout_marginEnd="15dp"/>
+
+                            <com.ewida.rickmorti.custom_view.MainBtn
+                                android:id="@+id/mainBtn3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:btnBackground="@drawable/wishlist_backgournd"
+                                app:btnText="@string/wishlist" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

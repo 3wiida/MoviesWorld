@@ -9,20 +9,20 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
 
         <com.ewida.rickmorti.custom_view.LoadingImage
             android:id="@+id/movieImage"
+            loadingImageUrl="@{movie.poster_path}"
             android:layout_width="150dp"
             android:layout_height="200dp"
-
-
-            loadingImageUrl="@{movie.poster_path}"
+            app:failureAnimation="@raw/image_loading_failure"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadingAnimation="@raw/image_loader" />
 
         <TextView
             android:id="@+id/movieName"

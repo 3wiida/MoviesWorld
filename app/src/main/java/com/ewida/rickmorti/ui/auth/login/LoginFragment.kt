@@ -13,7 +13,6 @@ import com.ewida.rickmorti.model.user_login_session.UserSessionResponse
 import com.ewida.rickmorti.ui.home.HomeActivity
 import com.ewida.rickmorti.ui.webview.WebActivity
 import com.ewida.rickmorti.utils.bundle_utils.IntentExtraKeys.SIGN_UP
-import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.GUEST_SESSION_ID
 import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.LAST_LOGIN_WAS
 import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.REMEMBER_ME_VALUE
 import com.ewida.rickmorti.utils.shared_pref_utils.PrefKeys.USER_SESSION_ID
@@ -78,7 +77,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
     }
 
     private fun beginGuestSession(){
-        val guestSessionId = getFromPref(requireContext(),GUEST_SESSION_ID,"") as String
+        val guestSessionId = getFromPref(requireContext(), USER_SESSION_ID,"") as String
         if(guestSessionId.isEmpty()){
             viewModel.createGuestSession()
         }else{
@@ -134,7 +133,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
 
         fun success(data: GuestSessionResponse) {
             disableLoading()
-            saveToPref(requireContext(),GUEST_SESSION_ID,data.guest_session_id)
+            saveToPref(requireContext(), USER_SESSION_ID,data.guest_session_id)
             //saveToPref(requireContext(),GUEST_EXPIRE_DATE,data.expires_at)
             saveToPref(requireContext(), LAST_LOGIN_WAS,"guest")
             startActivity(Intent(requireActivity(), HomeActivity::class.java))

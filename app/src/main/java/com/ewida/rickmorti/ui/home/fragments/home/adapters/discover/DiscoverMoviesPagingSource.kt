@@ -27,7 +27,7 @@ class DiscoverMoviesPagingSource @Inject constructor(private val apiCalls: ApiCa
                 nextKey = if (response.results.isEmpty()) null else currentPage + 1
             )
         } catch (throwable: Throwable) {
-            return LoadResult.Error(throwable)
+             LoadResult.Error(throwable)
         }
     }
 }

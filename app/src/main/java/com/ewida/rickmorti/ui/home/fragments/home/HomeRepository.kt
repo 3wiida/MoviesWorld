@@ -31,5 +31,10 @@ class HomeRepository @Inject constructor(private val apiCalls: ApiCalls) {
         pagingSourceFactory = { TopRatedPagingSource(apiCalls = apiCalls) }
     )
 
-    suspend fun getGenresList() = sendSafeApiCall { apiCalls.getMovieType() }
+    suspend fun getGenresList() = sendSafeApiCall {
+        apiCalls.getMovieType()
+    }
+
+    suspend fun getAccountDetails(sessionId: String) =
+        sendSafeApiCall { apiCalls.getAccountDetails(session_id = sessionId) }
 }

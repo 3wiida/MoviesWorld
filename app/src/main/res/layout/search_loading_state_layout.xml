@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -11,17 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/itemName"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/searchLoader"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Week"
-            android:textAlignment="center"
-            android:fontFamily="@font/poppins_medium"
+            android:layout_height="100dp"
+            app:lottie_rawRes="@raw/search_loading_anim"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

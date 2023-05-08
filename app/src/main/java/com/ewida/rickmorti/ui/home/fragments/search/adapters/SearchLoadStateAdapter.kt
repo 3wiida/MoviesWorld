@@ -7,13 +7,14 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ewida.rickmorti.R
+import com.ewida.rickmorti.databinding.SearchLoadingStateLayoutBinding
 import com.ewida.rickmorti.databinding.TrendingLoadingStateLayoutBinding
 
 class SearchLoadStateAdapter:LoadStateAdapter<SearchLoadStateAdapter.ItemViewHolder>() {
 
-    inner class ItemViewHolder(private val binding: TrendingLoadingStateLayoutBinding):RecyclerView.ViewHolder(binding.root){
+    inner class ItemViewHolder(private val binding: SearchLoadingStateLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(loadState: LoadState){
-            binding.trendingMovieShimmer.isVisible= loadState is LoadState.Loading
+            binding.searchLoader.isVisible= loadState is LoadState.Loading
         }
     }
 
@@ -22,8 +23,8 @@ class SearchLoadStateAdapter:LoadStateAdapter<SearchLoadStateAdapter.ItemViewHol
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): ItemViewHolder {
-        val binding=TrendingLoadingStateLayoutBinding.bind(LayoutInflater.from(parent.context).inflate(
-            R.layout.trending_loading_state_layout,parent,false))
+        val binding=SearchLoadingStateLayoutBinding.bind(LayoutInflater.from(parent.context).inflate(
+            R.layout.search_loading_state_layout,parent,false))
         return ItemViewHolder(binding)
     }
 }

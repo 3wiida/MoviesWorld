@@ -26,18 +26,18 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
 
     fun <T> collectState(
         stateFlow: StateFlow<CallState>,
-        state: Lifecycle.State,
-        loading: () -> Unit,
-        failure: (msg: String, code: Int) -> Unit,
-        success: (T) -> Unit
+        state: Lifecycle.State=Lifecycle.State.CREATED,
+        loading: () -> Unit={},
+        failure: ((msg: String, code: Int) -> Unit)={_,_->},
+        success: (T) -> Unit={}
     ) {
         lifecycleScope.launch {
             repeatOnLifecycle(state) {
                 stateFlow.collectLatest {
                     when (it) {
-                        CallState.EmptyState -> {}
+                        is CallState.EmptyState -> {}
+                        is CallState.LoadingState -> loading()
                         is CallState.FailureState -> failure(it.msg!!, it.code!!)
-                        CallState.LoadingState -> loading()
                         is CallState.SuccessState<*> -> success(it.data as T)
                     }
                 }
@@ -48,6 +48,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sendCalls()
+        collectResults()
     }
 
     override fun onCreateView(
@@ -57,11 +58,17 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
     ): View? {
         _binding = getViewBinding()
         setUpViews()
+        initClicks()
+        startObservers()
         return binding.root
     }
 
-    abstract fun sendCalls()
-    abstract fun setUpViews()
+    open fun sendCalls(){}
+    open fun setUpViews(){}
+    open fun collectResults(){}
+    open fun initClicks(){}
+    open fun startObservers(){}
+
     protected abstract fun getViewBinding(): VB
 
     fun showToast(context: Context, msg: String) {

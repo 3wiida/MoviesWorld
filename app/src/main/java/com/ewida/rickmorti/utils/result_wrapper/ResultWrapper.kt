@@ -1,5 +1,6 @@
 package com.ewida.rickmorti.utils.result_wrapper
 
+import android.util.Log
 import com.ewida.rickmorti.model.network_error_model.ErrorModel
 import com.google.gson.Gson
 import okio.IOException
@@ -9,7 +10,6 @@ import java.net.SocketTimeoutException
 sealed class CallResult<out T> {
     data class CallSuccess<T>(val data: T) : CallResult<T>()
     data class CallFailure(val msg: String, val code: Int) : CallResult<Nothing>()
-
 
 }
 
@@ -30,6 +30,7 @@ suspend fun <T> sendSafeApiCall(apiCall: suspend () -> T): CallResult<T> {
             is IOException -> CallResult.CallFailure("No Internet Connection", -1)
             is HttpException -> {
                 val failure = getFailureBody(throwable)
+                Log.d("```TAG```", "sendSafeApiCall: $failure")
                 CallResult.CallFailure(failure.status_message , failure.status_code )
             }
             else -> CallResult.CallFailure(throwable.message.toString(), -2)

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_height="245dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="35dp"
+        android:paddingEnd="25dp"
+        android:paddingStart="25dp"
+        android:paddingTop="12dp">
+
+        <TextView
+            android:fontFamily="@font/poppins_medium"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/create_list"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/listname"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/textMainColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/listNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:drawableStart="@drawable/edit_ic"
+            android:drawablePadding="10dp"
+            android:textColorHint="@color/textSecondaryColor"
+            android:hint="@string/ex_action_movies_favorites_etc"
+            android:textCursorDrawable="@drawable/cursor_theme"
+            android:background="@drawable/edit_text_background"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/list_description"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/textMainColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/listDescriptionET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:drawableStart="@drawable/edit_ic"
+            android:drawablePadding="10dp"
+            android:textColorHint="@color/textSecondaryColor"
+            android:hint="@string/your_list_description"
+            android:textCursorDrawable="@drawable/cursor_theme"
+            android:background="@drawable/edit_text_background"/>
+
+        <com.ewida.rickmorti.custom_view.MainBtn
+            android:id="@+id/btnCreateList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:btnText="@string/create"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

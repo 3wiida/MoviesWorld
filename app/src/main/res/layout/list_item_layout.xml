@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="list"
+            type="com.ewida.rickmorti.model.created_lists_response.CreatedLists" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/list_item_background">
+
+        <ImageView
+            android:id="@+id/ivListImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/movie_list_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvListTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/textMainColor"
+            android:textSize="13sp"
+            android:text="@{list.name}"
+            app:layout_constraintStart_toEndOf="@+id/ivListImage"
+            app:layout_constraintTop_toTopOf="@+id/ivListImage"
+            tools:text="Action Movies" />
+
+        <TextView
+            android:id="@+id/tvListDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/textSecondaryColor"
+            android:textSize="11sp"
+            android:text="@{list.description}"
+            tools:text="This is just test text for this list"
+            app:layout_constraintStart_toEndOf="@+id/ivListImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvListTitle" />
+
+        <TextView
+            android:id="@+id/tvListItemCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/textSecondaryColor"
+            android:textSize="11sp"
+            tools:text='@{list.item_count + " items"}'
+            app:layout_constraintStart_toEndOf="@+id/ivListImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvListDescription" />
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/delete_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

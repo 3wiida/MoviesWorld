@@ -20,8 +20,8 @@
             android:layout_height="60dp"
             app:imageRadius="600"
             loadingImageUrl="@{actor.profile_path}"
-
-            app:loadingAnimation="@raw/actor_loader" />
+            app:loadingAnimation="@raw/image_loader"
+            app:failureAnimation="@raw/no_image" />
 
         <TextView
             android:id="@+id/actorName"

@@ -1,13 +1,17 @@
 package com.ewida.rickmorti.api
 
+import com.ewida.rickmorti.model.account_response.AccountResponse
 import com.ewida.rickmorti.model.cast_response_model.CastResponse
 import com.ewida.rickmorti.model.common_movie_response.CommonMovieResponse
+import com.ewida.rickmorti.model.create_list_response.CreateListResponse
+import com.ewida.rickmorti.model.created_lists_response.ListsResponse
 import com.ewida.rickmorti.model.genre_response_model.GenresResponse
 import com.ewida.rickmorti.model.guest_session_response.GuestSessionResponse
 import com.ewida.rickmorti.model.login_response.LoginResponse
 import com.ewida.rickmorti.model.movie_response_model.MovieResponse
 import com.ewida.rickmorti.model.request_token_response.RequestTokenResponse
 import com.ewida.rickmorti.model.user_login_session.UserSessionResponse
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -90,4 +94,27 @@ interface ApiCalls {
         @Path("movie_id") movieId:Int
     ):CastResponse
 
+    @POST("list")
+    suspend fun createList(
+        @Query("session_id") session_id:String,
+        @Query("name") name:String,
+        @Query("description") description:String
+    ):CreateListResponse
+
+    @GET("/3/account")
+    suspend fun getAccountDetails(
+        @Query("session_id") session_id: String
+    ):AccountResponse
+
+    @GET("/3/account/{account_id}/lists")
+    suspend fun getCreatedLists(
+        @Path("account_id") account_id:Int,
+        @Query("session_id") session_id:String
+    ):ListsResponse
+
+    @DELETE("/3/list/{list_id}")
+    suspend fun deleteList(
+        @Path("list_id") list_id:String,
+        @Query("session_id") session_id:String
+    )
 }

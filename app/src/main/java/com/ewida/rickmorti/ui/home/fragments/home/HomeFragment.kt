@@ -4,18 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ewida.rickmorti.base.BaseFragment
+import com.ewida.rickmorti.common.Common.ACCOUNT_ID
 import com.ewida.rickmorti.common.Common.GENRES_LIST
-import com.ewida.rickmorti.common.Common.TAG
 import com.ewida.rickmorti.common.Keys.MOVIE_ID_KEY
 import com.ewida.rickmorti.databinding.FragmentHomeBinding
+import com.ewida.rickmorti.model.account_response.AccountResponse
 import com.ewida.rickmorti.model.genre_response_model.GenresResponse
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMovieLoadingStateAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.discover.DiscoverMoviesAdapter
@@ -24,7 +21,6 @@ import com.ewida.rickmorti.ui.home.fragments.home.adapters.top_rated.TopRatedMov
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMovieLoadingStateAdapter
 import com.ewida.rickmorti.ui.home.fragments.home.adapters.trending.TrendingMoviesAdapter
 import com.ewida.rickmorti.ui.movie.MovieDataActivity
-import com.ewida.rickmorti.utils.inVisible
 import com.ewida.rickmorti.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -45,52 +41,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override val viewModel: HomeViewModel by viewModels()
 
     /** Functions **/
-    override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentHomeBinding.inflate(layoutInflater)
     override fun sendCalls() {
         viewModel.getGenreList()
+        viewModel.getAccountDetails(requireContext())
     }
 
     override fun setUpViews() {
+        binding.viewModel = viewModel
         initRecyclers()
-        initMainClicks()
         observeRefresh()
-        collectDiscoverMovies()
-        collectTopRatedMovies()
-        collectTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+        viewModel.observeLoading(
+            discoverMoviesAdapter,
+            trendingMoviesAdapter,
+            topRatedMoviesAdapter
+        )
+    }
+
+    override fun collectResults() {
+
         collectState<GenresResponse>(
             stateFlow = viewModel.genreList,
-            state = Lifecycle.State.CREATED,
-            loading = {GenreListCollector().loading()},
-            failure = {msg,_->GenreListCollector().failure(msg)},
-            success = {data->GenreListCollector().success(data)}
+            failure = { msg, _ -> GenreListCollector().failure(msg) },
+            success = { data -> GenreListCollector().success(data) }
+        )
+
+        collectState<AccountResponse>(
+            stateFlow = viewModel.accountState,
+            failure = { _, _ -> AccountResponseCollector().failure() },
+            success = { data -> AccountResponseCollector().success(data) }
         )
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initShimmer()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (discoverMoviesAdapter.snapshot().items.isNotEmpty()) {
-            binding.discoverMovieShimmer.stopShimmer()
-            binding.discoverMovieShimmer.inVisible()
-        }
-
-        if (trendingMoviesAdapter.snapshot().items.isNotEmpty()) {
-            binding.trendingMovieShimmer.stopShimmer()
-            binding.trendingMovieShimmer.inVisible()
-        }
-
-        if (topRatedMoviesAdapter.snapshot().items.isNotEmpty()) {
-            binding.topRatedShimmer.stopShimmer()
-            binding.topRatedShimmer.inVisible()
-        }
-
-    }
 
     override fun onDestroyView() {
         binding.discoverMovieRv.adapter = null
@@ -100,51 +83,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun initRecyclers() {
-        //DiscoverRecycler
+
         binding.discoverMovieRv.apply {
             adapter = discoverMoviesAdapter.withLoadStateHeaderAndFooter(
                 header = DiscoverMovieLoadingStateAdapter(),
                 footer = DiscoverMovieLoadingStateAdapter()
             )
-
-            layoutManager =
-                LinearLayoutManager(
-                    binding.discoverMovieRv.context,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
             setHasFixedSize(true)
-
         }
 
-        //TrendingMovies
         binding.trendingMovieRv.apply {
             adapter = trendingMoviesAdapter.withLoadStateHeaderAndFooter(
                 header = TrendingMovieLoadingStateAdapter(),
                 footer = TrendingMovieLoadingStateAdapter()
             )
-            layoutManager =
-                LinearLayoutManager(
-                    binding.trendingMovieRv.context,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
             setHasFixedSize(true)
         }
 
-        //TopRatedMovies
         binding.topRatedMoviesRv.apply {
             adapter = topRatedMoviesAdapter.withLoadStateHeaderAndFooter(
                 header = TopRatedMoviesLoadingStateAdapter(),
                 footer = TopRatedMoviesLoadingStateAdapter()
             )
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
         }
     }
 
-    private fun initMainClicks() {
+    override fun initClicks() {
         discoverMoviesAdapter.onMovieClicked = { movie ->
             bundle.putInt(MOVIE_ID_KEY, movie.id)
             startActivity(Intent(requireActivity(), MovieDataActivity::class.java))
@@ -168,25 +133,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private fun initShimmer(){
-        discoverMoviesAdapter.addLoadStateListener { loadState ->
-            if (loadState.refresh is LoadState.NotLoading && discoverMoviesAdapter.itemCount > 0) {
-                binding.discoverMovieShimmer.inVisible()
-            }
-        }
-
-        trendingMoviesAdapter.addLoadStateListener { loadState->
-            if (loadState.refresh is LoadState.NotLoading && trendingMoviesAdapter.itemCount > 0) {
-                binding.trendingMovieShimmer.inVisible()
-            }
-        }
-
-        topRatedMoviesAdapter.addLoadStateListener {loadState->
-            if(loadState.refresh is LoadState.NotLoading && topRatedMoviesAdapter.itemCount>0){
-                binding.topRatedShimmer.inVisible()
-            }
-        }
-    }
 
     private fun observeRefresh() {
         refreshObserver.observe(viewLifecycleOwner) { isRefresh ->
@@ -219,10 +165,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private inner class GenreListCollector{
-        fun loading(){}
-        fun failure(msg:String){toast(msg)}
-        fun success(data:GenresResponse){ GENRES_LIST = data.genres.toMutableList() }
+    private inner class GenreListCollector {
+        fun failure(msg: String) {
+            toast(msg)
+        }
+
+        fun success(data: GenresResponse) {
+            GENRES_LIST = data.genres.toMutableList()
+        }
+    }
+
+    private inner class AccountResponseCollector {
+
+        fun failure() {
+            collectDiscoverMovies()
+            collectTopRatedMovies()
+            collectTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+        }
+
+        fun success(data: AccountResponse) {
+            binding.me = data
+            ACCOUNT_ID = data.id
+            collectDiscoverMovies()
+            collectTopRatedMovies()
+            collectTrendingMovies(mediaType = mediaType, timeWindow = timeWindow)
+        }
+
     }
 
 }

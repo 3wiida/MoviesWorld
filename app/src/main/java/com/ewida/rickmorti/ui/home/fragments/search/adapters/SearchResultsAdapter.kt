@@ -11,7 +11,7 @@ import com.ewida.rickmorti.model.common_movie_response.CommonMovie
 class SearchResultsAdapter:PagingDataAdapter<CommonMovie,SearchResultsAdapter.MovieViewHolder>(Comparator) {
 
     inner class MovieViewHolder(val binding:SearchResultItemBinding):RecyclerView.ViewHolder(binding.root)
-
+    var onMovieClicked:(CommonMovie)->Unit={}
     private object Comparator:DiffUtil.ItemCallback<CommonMovie>(){
         override fun areItemsTheSame(oldItem: CommonMovie, newItem: CommonMovie)=oldItem==newItem
         override fun areContentsTheSame(oldItem: CommonMovie, newItem: CommonMovie)=oldItem.id==newItem.id
@@ -21,6 +21,9 @@ class SearchResultsAdapter:PagingDataAdapter<CommonMovie,SearchResultsAdapter.Mo
         val item=getItem(position)
         item?.let { movie->
             holder.binding.movie=movie
+            holder.itemView.setOnClickListener {
+                onMovieClicked.invoke(item)
+            }
         }
     }
 

@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/mainAppColor</item>
+        <item name="android:windowBackground">@color/mainAppColor</item>
         <!-- Customize your theme here. -->
         
     </style>
@@ -51,5 +52,18 @@
         <item name="android:textColor">@color/textMainColor</item>
     </style>
 
+    <!-- Bottom Sheet styles-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+    </style>
 
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
+    </style>
 </resources>

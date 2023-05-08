@@ -11,10 +11,6 @@ class SpacingItemDecorator(private val horizontalSpacing:Int):RecyclerView.ItemD
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        if(parent.getChildLayoutPosition(view)%2!=0){
-            outRect.right=0
-        }else{
-            outRect.right=horizontalSpacing
-        }
+        if(parent.getChildAdapterPosition(view)%2!=0) outRect.right=horizontalSpacing
     }
 }
