@@ -52,4 +52,10 @@ class MainBtn(context: Context, attributeSet: AttributeSet) :
 
         }
     }
+
+    fun setText(text:String?){
+        text?.let {
+            btnTv.text=it
+        }
+    }
 }

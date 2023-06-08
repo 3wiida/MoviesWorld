@@ -48,5 +48,9 @@
     <declare-styleable name="EmptyStateView">
         <attr name="animation" format="reference"/>
         <attr name="emptyViewText" format="string"/>
+        <attr name="isBtnEnabled" format="boolean"/>
+        <attr name="isSecondTextEnabled" format="boolean"/>
+        <attr name="secondText" format="string"/>
+        <attr name="btnTxt" format="string"/>
     </declare-styleable>
 </resources>

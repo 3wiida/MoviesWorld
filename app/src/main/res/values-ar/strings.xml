@@ -5,4 +5,5 @@
     <string name="you_need_to_login_to_use_this_feature">You need to login to use this feature</string>
     <string name="login_require_second_text">This feature is allowed only for user accounts, click the login button to start get full features of this app</string>
     <string name="add_list_button">add list button</string>
+    <string name="logout_confirm">Are you sure you want to logout ?</string>
 </resources>

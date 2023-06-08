@@ -77,6 +77,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="25dp"
+            tools:visibility="gone"
             android:visibility="@{(viewModel.isLoading() &amp;&amp; !viewModel.isGuestBoolean())?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -92,6 +93,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
+            tools:visibility="gone"
             android:visibility="@{viewModel.isGuestBoolean()?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -140,6 +142,37 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             android:contentDescription="@string/add_list_button" />
+
+        <com.ewida.rickmorti.custom_view.EmptyStateView
+            android:id="@+id/emptyState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isEmptyState()?View.VISIBLE:View.GONE}"
+            app:animation="@raw/no_image"
+            app:btnTxt="Create list"
+            app:emptyViewText="No Lists Found"
+            app:isBtnEnabled="true"
+            app:isSecondTextEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="0.485"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/listSearchView"
+            app:layout_constraintVertical_bias="0.319"
+            app:secondText="Created lists will appear here, create one now" />
+
+        <com.ewida.rickmorti.custom_view.EmptyStateView
+            android:id="@+id/searchEmptyState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="83dp"
+            android:visibility="gone"
+            app:animation="@raw/search_empty"
+            app:emptyViewText="@string/movieNotfound"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/listSearchView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

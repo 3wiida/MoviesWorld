@@ -146,7 +146,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/trendingNowTv" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/tvTerms"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
@@ -166,7 +166,7 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline"
-                        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvTerms" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -33,6 +33,8 @@ class ListsViewModel @Inject constructor(private val repo: ListsRepository) : Ba
 
     val isGuestBoolean = ObservableBoolean(false)
 
+    val isEmptyState = ObservableBoolean(false)
+
     init {
         isGuestBoolean.set(ACCOUNT_ID == -1)
     }
@@ -46,8 +48,10 @@ class ListsViewModel @Inject constructor(private val repo: ListsRepository) : Ba
                     isLoading.set(false)
                     _getListsState.value = CallState.FailureState(response.msg, response.code)
                 }
+
                 is CallResult.CallSuccess -> {
                     isLoading.set(false)
+                    isEmptyState.set(response.data.total_results == 0)
                     _getListsState.value = CallState.SuccessState(response.data)
                 }
             }
@@ -65,8 +69,11 @@ class ListsViewModel @Inject constructor(private val repo: ListsRepository) : Ba
             )) {
                 is CallResult.CallFailure -> _createListState.value =
                     CallState.FailureState(msg = response.msg, code = response.code)
-                is CallResult.CallSuccess -> _createListState.value =
-                    CallState.SuccessState(data = response.data)
+
+                is CallResult.CallSuccess -> {
+                    isEmptyState.set(false)
+                    _createListState.value = CallState.SuccessState(data = response.data)
+                }
             }
         }
     }
@@ -79,8 +86,10 @@ class ListsViewModel @Inject constructor(private val repo: ListsRepository) : Ba
                 repo.deleteList(listId = listId, sessionId = getSessionId(context))) {
                 is CallResult.CallFailure -> _deleteListState.value =
                     CallState.FailureState(response.msg, response.code)
-                is CallResult.CallSuccess -> _deleteListState.value =
-                    CallState.SuccessState(response.data)
+
+                is CallResult.CallSuccess ->
+                    _deleteListState.value = CallState.SuccessState(response.data)
+
             }
         }
     }
@@ -104,6 +113,16 @@ class ListsViewModel @Inject constructor(private val repo: ListsRepository) : Ba
         val newList = oldList.map { it.copy() }.toMutableList()
         newList.add(createdItem)
         return newList
+    }
+
+    fun searchList(sourceList: List<CreatedLists>, searchQuery: String): List<CreatedLists> {
+        val resultsList = mutableListOf<CreatedLists>()
+        sourceList.forEach { item ->
+            if (item.name.contains(searchQuery) || item.description.contains(searchQuery)) {
+                resultsList.add(item)
+            }
+        }
+        return resultsList
     }
 
     fun isGuest() = ACCOUNT_ID == -1

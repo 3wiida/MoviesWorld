@@ -1,9 +1,10 @@
 package com.ewida.rickmorti.ui.home.fragments.lists
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import com.ewida.rickmorti.base.BaseFragment
-import com.ewida.rickmorti.common.Common.ACCOUNT_ID
 import com.ewida.rickmorti.custom_view.dialogs.CreateListBottomSheet
 import com.ewida.rickmorti.custom_view.dialogs.LoadingDialog
 import com.ewida.rickmorti.databinding.FragmentListsBinding
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ListsFragment : BaseFragment<FragmentListsBinding, ListsViewModel>() {
 
     override val viewModel: ListsViewModel by viewModels()
+    private var listsObserver: RecyclerView.AdapterDataObserver?=null
     private val listsAdapter: ListsAdapter = ListsAdapter()
     private var lastDeletedItem: CreatedLists? = null
     private var lastCreatedItem: CreatedLists? = null
@@ -31,11 +33,29 @@ class ListsFragment : BaseFragment<FragmentListsBinding, ListsViewModel>() {
     override fun setUpViews() {
         binding.viewModel = viewModel
         binding.rvLists.adapter = listsAdapter
+        listsObserver = object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.lottieAnimationView.isVisible = false
+                binding.rvLists.isVisible = true
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                super.onItemRangeRemoved(positionStart, itemCount)
+                binding.lottieAnimationView.isVisible = false
+                binding.rvLists.isVisible = true
+            }
+        }
+        listsAdapter.registerAdapterDataObserver(listsObserver!!)
     }
 
     override fun initClicks() {
 
         binding.addListBtn.setOnClickListener {
+            createListBottomSheet.show(requireActivity().supportFragmentManager, null)
+        }
+
+        binding.emptyState.onBtnClick = {
             createListBottomSheet.show(requireActivity().supportFragmentManager, null)
         }
 
@@ -49,6 +69,21 @@ class ListsFragment : BaseFragment<FragmentListsBinding, ListsViewModel>() {
             lastDeletedItem = deletedList
             viewModel.deleteList(requireContext(), deletedList.id.toString())
         }
+
+        binding.listSearchView.watchText(
+            action = { query ->
+                listsAdapter.submitList(viewModel.searchList(listsAdapter.currentList, query))
+                binding.searchEmptyState.isVisible = listsAdapter.currentList.isEmpty()
+            },
+            emptyAction = {
+                viewModel.getLists(requireContext())
+            },
+            loading = {
+                binding.lottieAnimationView.isVisible = true
+                binding.rvLists.isVisible = false
+            },
+            duration = 2000L
+        )
 
     }
 
@@ -128,6 +163,9 @@ class ListsFragment : BaseFragment<FragmentListsBinding, ListsViewModel>() {
                         deletedItem = it
                     )
                 )
+                if (listsAdapter.currentList.isEmpty()) viewModel.isEmptyState.set(true) else viewModel.isEmptyState.set(
+                    false
+                )
             }
         }
 
@@ -141,7 +179,16 @@ class ListsFragment : BaseFragment<FragmentListsBinding, ListsViewModel>() {
                     )
                 )
             }
+            if (listsAdapter.currentList.isEmpty()) viewModel.isEmptyState.set(true) else viewModel.isEmptyState.set(
+                false
+            )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        listsAdapter.unregisterAdapterDataObserver(listsObserver!!)
+        listsObserver=null
     }
 
 }

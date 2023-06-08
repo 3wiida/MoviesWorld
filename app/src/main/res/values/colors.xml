@@ -19,7 +19,7 @@
     <color name="buttonMainColor">#546EE5</color>
     <color name="buttonSecondaryColor">#F9FAFA</color>
     <color name="disabledButtonColor">#80546EE5</color>
-    
+
     <!-- Text Colors -->
     <color name="textMainColor">#FFFFFF</color>
     <color name="textSecondaryColor">#838C9F</color>
@@ -39,4 +39,8 @@
     <!--  SearchView  -->
     <color name="searchViewBackground">#502E3350</color>
     <color name="indicatorBottomViewColor">#50546EE5</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 </resources>

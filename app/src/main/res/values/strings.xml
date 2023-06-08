@@ -45,6 +45,10 @@
     <string name="trendingNow">Trending Now</string>
     <string name="discover">Discover</string>
     <string name="home">Home</string>
+    <string name="termsandconditions">Terms and conditions</string>
+    <string name="aboutus">About us</string>
+    <string name="contactus">Contact us</string>
+    <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="lists">Lists</string>
     <string name="profile">Profile</string>
@@ -59,11 +63,23 @@
     <string name="list_description">List Description</string>
     <string name="listname">List Name</string>
     <string name="create">Create</string>
+    <string name="termsContent">Terms and Conditions for Cinema Center :\n\n1. Acceptance of Terms : By accessing and using Cinema Center, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use the App.\n\n2. Information Accuracy :
+   The App provides information about selected movies, including but not limited to movie titles, descriptions, release dates, and cast members. While we strive to ensure the accuracy of the information, we cannot guarantee its completeness, correctness, or timeliness. The information is provided for informational purposes only and should not be relied upon for making any decisions.\n\n3. User Responsibilities:
+   You are responsible for the way you use the App. You agree to use the App solely for personal and non-commercial purposes and in compliance with all applicable laws and regulations. You will not use the App in a manner that could harm, disrupt, or interfere with its functioning or the experience of other users.\n\n4. Intellectual Property:
+   The App and all its contents, including but not limited to text, images, graphics, logos, and software, are the intellectual property of the App\'s developers or its licensors. You are granted a limited, non-exclusive, and non-transferable license to use the App for personal purposes only. You may not modify, reproduce, distribute, or create derivative works based on the App without prior written consent.\n\n5. Privacy:
+   We value your privacy and will handle your personal information in accordance with our Privacy Policy. By using the App, you consent to the collection, use, and disclosure of your personal information as described in the Privacy Policy.\n\n6. Disclaimer of Liability :
+   The App is provided on an "as is" basis, without any warranties or guarantees of any kind, whether express or implied. We disclaim all liability for any damages, losses, or expenses arising from the use of the App or reliance on the information provided within.\n\n7. Modifications to the App and Terms :
+   We reserve the right to modify or discontinue the App, or any part thereof, at any time without prior notice. We may also revise these Terms and Conditions from time to time. Your continued use of the App after any modifications or revisions constitutes your acceptance of the updated terms.\n\n Governing Law :
+   These Terms and Conditions shall be governed by and construed in accordance with the laws of the jurisdiction where the App\'s developers are located, without regard to its conflict of laws principles.\n\n9. Contact :
+   If you have any questions or concerns regarding these Terms and Conditions, please contact us at mahmoudewida3@gmail.com</string>
+    <string name="aboutUsContent">About Us :\n\nWelcome to Simple Movies, your go-to Android application for easy access to information about your favorite movies. We are dedicated to providing a seamless and enjoyable movie browsing experience for all movie enthusiasts.\n\nAt Simple Movies, our mission is to deliver a user-friendly platform that allows you to explore a vast collection of movies effortlessly. Whether you\'re searching for the latest releases, timeless classics, or hidden gems, our app provides you with detailed information about each movie, including captivating descriptions, release dates, and talented cast members.\n\nWe understand the importance of accurate and up-to-date information, which is why we strive to ensure that the content available on our app is reliable and comprehensive. While we do our best to provide accurate details, please note that the information is for reference purposes only and may be subject to change.\n\nWe value your privacy and have implemented robust security measures to protect your personal information. Rest assured that any data you provide is handled in accordance with our Privacy Policy, maintaining your confidentiality and trust.\n\nOur team of passionate movie lovers is constantly working to enhance the app\'s features and user experience. We appreciate your feedback and suggestions, as they play a crucial role in helping us improve and tailor the app to meet your needs and preferences.\n\nThank you for choosing Simple Movies as your movie companion. We hope our app becomes your trusted source for discovering, exploring, and enjoying an array of cinematic wonders. Lights, camera, action - let\'s embark on a delightful movie journey together!\n\nIf you have any questions, concerns, or feedback, please don\'t hesitate to reach out to us at mahmoudewida3@gmail.com.</string>
     <string name="ex_action_movies_favorites_etc">Ex: Action Movies, Favorites etc..</string>
     <string name="your_list_description">Your list description</string>
     <string name="you_need_to_login_to_use_this_feature">You need to login to use this feature</string>
     <string name="login_require_second_text">This feature is allowed only for user accounts, click the login button to start get full features of this app</string>
     <string name="add_list_button">add list button</string>
+    <string name="logout_confirm">Are you sure you want to logout ?</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>
